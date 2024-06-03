@@ -1,0 +1,10 @@
+matplotlib
+wheel
+easyocr
+playsound
+pip
+setuptools
+pyaudio
+transformers
+torchaudio
+pythainlp
