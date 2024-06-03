@@ -2,7 +2,6 @@ import pyaudio
 import audioop
 import matplotlib.pyplot as plt
 import numpy as np
-import wave
 from src.constants import *
 
 
@@ -81,40 +80,4 @@ class Audio_processing:
         plt.legend()
         plt.show()
 
-    def record_audio_from_test(self, output_filename):
-        
-         # Parameters for audio recording
-        FORMAT = pyaudio.paInt16
-        CHANNELS = 1
-        RATE = 35000
-        CHUNK = (
-            10000  # The chunk size defines the length of time for each analysis frame.
-        )
-
-        THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.
-        SILENCE_LIMIT = (
-            2  # Time in seconds to wait for silence before stopping recording.
-        )
-        p = pyaudio.PyAudio()
-        # Open the microphone stream
-        stream = p.open(
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=RATE,
-            input=True,
-            frames_per_buffer=CHUNK,
-        )
-        # Close the audio stream
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-        
-        wf = wave.open(output_filename, 'wb')
-        wf.setnchannels(CHANNELS)
-        wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(b''.join(frames))
-        wf.close()
-        
-        audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
-        return audio_data
+    
