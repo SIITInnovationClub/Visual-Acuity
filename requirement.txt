@@ -8,3 +8,4 @@ pyaudio
 transformers
 torchaudio
 pythainlp
+PyObjC
