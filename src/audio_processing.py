@@ -10,11 +10,11 @@ class Audio_processing():
 
     def record_audio(self):
         # Parameters for audio recording
-        FORMAT = pyaudio.paInt32
+        FORMAT = pyaudio.paInt24
         CHANNELS = 1
-        RATE = 48000
-        CHUNK = 4096  # Reduced chunk size to reduce overflow risk
-        THRESHOLD = 10  # Adjust this threshold to fit your environment and microphone sensitivity.
+        RATE = 44100
+        CHUNK = 1024  # Reduced chunk size to reduce overflow risk
+        THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.
         SILENCE_LIMIT = 2  # Time in seconds to wait for silence before stopping recording.
         
         p = pyaudio.PyAudio()
