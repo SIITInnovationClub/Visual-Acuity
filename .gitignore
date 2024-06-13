@@ -4,8 +4,6 @@ __pycache__/
 
 # Ignore virtual environment directory
 env/
-
-# Ignore virtual environment directory
 path/
 
 # Ignore Jupyter Notebook checkpoints
