@@ -2,7 +2,7 @@
 # source path/to/venv/bin/activate
 
 # for run the code
-# python3 -u "/Users/anawin/Documents/GitHub/Visual-Acuity/main.py"
+# python3 -u "/Users/apinyasriyota/Documents/GitHub/Visual-Acuity/main.py"
 
 from src.constants import *
 from src.image_processing import Image_processing
