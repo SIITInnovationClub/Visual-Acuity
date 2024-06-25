@@ -3,6 +3,10 @@
 
 # for run the code
 # python3 -u "/Users/apinyasriyota/Documents/GitHub/Visual-Acuity/main.py"
+<<<<<<< Updated upstream
+=======
+# python3 -m main.py
+>>>>>>> Stashed changes
 
 from src.constants import *
 from src.image_processing import Image_processing
