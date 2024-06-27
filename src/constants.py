@@ -22,7 +22,11 @@ playsound_file_path = {
     'change_pic':'soundtrack/Change pic.wav',
     'welcome':'soundtrack/1.สวัสดีค่ะคุณกำลังเข้าสู่.wav',
     'first_line':'soundtrack/เริ่มพูดบรรทัดแรกได้เลยค.wav',
-    'next_line':'soundtrack/เริ่มพูดบรรทัดถัดไปได้เล.wav'
+    'next_line':'soundtrack/เริ่มพูดบรรทัดถัดไปได้เล.wav',
+    'check_number':'soundtrack/เลขที่คุณเห็น.wav',
+    'check_glasses':'soundtrack/คุณใส่แว่น.wav',
+    'call_nurse':'soundtrack/กำลังเรียกพยาบาล.wav',
+    'nurse':'soundtrack/พยาบาลกำลังมา.wav'
 }
 
 def playsound_util(path):
