@@ -68,7 +68,7 @@ if __name__ == "__main__":
         res_text = SPEECH_processor.get_text(res_rec)
         print("PURE_TEXT : %s" % (res_text))
         user_respond = TEXT_processor.process_user_respond(res_text)
-        print("TRANSFORM : %s" % (user_respond))
+        print("TRANSFORM_TO_RESPONSE : %s" % (user_respond))
         print("* User Response *")
         print("YES : %s" % (user_respond in YES))
         print("NO  : %s" % (user_respond in NO))
@@ -218,13 +218,25 @@ if __name__ == "__main__":
         print(eye_val)
 
     # Example parameters for the visual acuity test result
-    write_va_result_to_file(
-        re_sc=eye_val,
-        re_scph="-",
-        re_cc="-",
-        re_ccph="-",
-        le_sc=eye_val,
-        le_scph="-",
-        le_cc="-",
-        le_ccph="-",
-    )
+    if glasses_user:
+        write_va_result_to_file(
+            re_sc="-",
+            re_scph="-",
+            re_cc=eye_val,
+            re_ccph="-",
+            le_sc="-",
+            le_scph="-",
+            le_cc=eye_val,
+            le_ccph="-",
+        )
+    else:
+        write_va_result_to_file(
+            re_sc="eye_val",
+            re_scph="-",
+            re_cc="-",
+            re_ccph="-",
+            le_sc="eye_val",
+            le_scph="-",
+            le_cc="-",
+            le_ccph="-",
+        )
