@@ -68,9 +68,10 @@ if __name__ == "__main__":
         res_text = SPEECH_processor.get_text(res_rec)
         print("PURE_TEXT : %s" % (res_text))
         user_respond = TEXT_processor.process_user_respond(res_text)
-        print("RESPONSE : %s" % (user_respond))
+        print("TRANSFORM : %s" % (user_respond))
+        print("* User Response *")
         print("YES : %s" % (user_respond in YES))
-        print("NO : %s" % (user_respond in NO))
+        print("NO  : %s" % (user_respond in NO))
         if user_respond in YES:
             glasses_user = True
             print("USER : wear the glasses")
