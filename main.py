@@ -2,8 +2,7 @@
 # source path/to/venv/bin/activate
 
 # for run the code
-# python3 -u "/Users/apinyasriyota/Documents/GitHub/Visual-Acuity/main.py"
-# python3 -m main.py
+# python3 -m main
 
 from src.constants import *
 from src.image_processing import Image_processing
@@ -53,6 +52,7 @@ if __name__ == "__main__":
         "ไม่ค่ะ",
         "ไม่คะ",
     ]
+    glasses_user = False
     total_score = 0
     num_pic = 2
     total_pic = 0
@@ -60,6 +60,27 @@ if __name__ == "__main__":
     result_global = ""
     change_page = True
     playsound_util(playsound_file_path["welcome"])
+    time.sleep(1)
+
+    while True:
+        playsound_util(playsound_file_path["check_glasses"])
+        res_rec = AUDIO_processor.record_audio()
+        res_text = SPEECH_processor.get_text(res_rec)
+        print("PURE_TEXT : %s" % (res_text))
+        user_respond = TEXT_processor.process_user_respond(res_text)
+        print("RESPONSE : %s" % (user_respond))
+        print("YES : %s" % (user_respond in YES))
+        print("NO : %s" % (user_respond in NO))
+        if user_respond in YES:
+            glasses_user = True
+            print("USER : wear the glasses")
+            break
+        elif user_respond in NO:
+            print("USER : don't wear the glasses")
+            break
+        else:
+            playsound_util(playsound_file_path["cannot_catch"])
+
     time.sleep(1)
 
     for i in range(num_pic):
