@@ -237,9 +237,9 @@ if __name__ == "__main__":
                     print(hyp_text)
                     print(f"{hyp_text.split(" ")}")
 
-                    if diff_two_array(hyp_text.split(" "), i):
+                    if diff_length_array(hyp_text.split(" "), i):
                         while True:
-                            playsound_util(playsound_file_path["check_number"])
+                            playsound_util(playsound_file_path["check_other_number"])
                             res_rec = AUDIO_processor.record_audio()
                             res_text = SPEECH_processor.get_text(res_rec)
                             print("PURE_TEXT : %s" % (res_text))
@@ -248,10 +248,10 @@ if __name__ == "__main__":
                             print("* User Response *")
                             if user_respond in YES:
                                 print("YES")
-                                user_result = False
-                                break
-                            elif user_respond in NO:
-                                user_result = repeat_test_user_vision_2(
+                                # all_num = len(i)
+                                # current_num = len(hyp_text.split(" "))
+                                # less_num = all_num - current_num
+                                new_number = other_number(
                                     AUDIO_processor,
                                     SPEECH_processor,
                                     TEXT_processor,
@@ -259,23 +259,22 @@ if __name__ == "__main__":
                                     YES,
                                     NO,
                                 )
+                                hyp_text = hyp_text + " " + new_number
+                                break
+
+                            elif user_respond in NO:
+                                print("NO")
                                 break
                             else:
                                 print("Don't understand, please say it again.")
                                 playsound_util(playsound_file_path["cannot_catch"])
-                        if user_result:
-                            print("Test correct")
-                            check_next_line(count_line, len(result_append), time)
-                            break
-                        else:
-                            print("Test incorrect")
-                            check_next_line(count_line, len(result_append), time)
-                            break
-                    else:
-                        print("Test correct")
+
                         check_next_line(count_line, len(result_append), time)
                         break
-            print(f"Speech text: {speech_text}")
+                    else:
+                        check_next_line(count_line, len(result_append), time)
+                        break
+
             print(f"hyp_text: {hyp_text}")
             print(f"ref_text: {ref_text}")
             print("=========================================")
