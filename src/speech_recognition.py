@@ -1,11 +1,11 @@
 import torch
 import torchaudio
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2Tokenizer
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2CTCTokenizer
 from pythainlp import sent_tokenize, word_tokenize
 class Speech_recognition():
     def __init__(self):
         self.model_name = "wannaphong/wav2vec2-large-xlsr-53-th-cv8-deepcut"
-        self.tokenizer = Wav2Vec2Tokenizer.from_pretrained(self.model_name)
+        self.tokenizer = Wav2Vec2CTCTokenizer.from_pretrained(self.model_name)
         self.processor = Wav2Vec2Processor.from_pretrained(self.model_name)
         self.model = Wav2Vec2ForCTC.from_pretrained(self.model_name)
 
