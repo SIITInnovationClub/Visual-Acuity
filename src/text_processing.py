@@ -3,13 +3,50 @@ class Text_processing:
         pass
 
     def process_text(self, text_sample: str) -> str:
-        key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "ฮ่า", "หก", "เจ็ด", "แปด", "เก้า"]
+        synonym_one = ["นึก", "นึ่ง", "นึง"]
+        synonym_two = ["ส่อง", "ซอง"]
+        synonym_three = ["ซ้ำ"]
+        synonym_four = ["สี", "ซี"]
+        synonym_five = ["ฮา", "ฮ่า", "ห่า", "ฮ่ะ"]
+        synonym_six = ["ฮก", "ฮ้ก", "ห้ก","อก"]
+        synonym_seven = ["เจต", "เจ๋ด", "เจ้ด"]
+        synonym_eight = ["แปต"]
+        synonym_nine = ["เก่า"]
+        key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
+        key = (
+            key
+            + synonym_one
+            + synonym_two
+            + synonym_three
+            + synonym_four
+            + synonym_five
+            + synonym_six
+            + synonym_seven
+            + synonym_eight
+            + synonym_nine
+        )
         result = []
         text, *_ = text_sample[0]
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
-                if word == "ฮ่า":
+                if word in synonym_one:
+                    word = "หนึ่ง"
+                elif word in synonym_two:
+                    word = "สอง"
+                elif word in synonym_three:
+                    word = "สาม"
+                elif word in synonym_four:
+                    word = "สี่"
+                elif word in synonym_five:
                     word = "ห้า"
+                elif word in synonym_six:
+                    word = "หก"
+                elif word in synonym_seven:
+                    word = "เจ็ด"
+                elif word in synonym_eight:
+                    word = "แปด"
+                elif word in synonym_nine:
+                    word = "เก้า"
                 result.append(word)
         # result = ['หนึ่ง', 'สอง', 'สาม', 'สี่']
         hyp_text = ""

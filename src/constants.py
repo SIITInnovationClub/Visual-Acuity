@@ -25,7 +25,7 @@ playsound_file_path = {
     "first_line": "soundtrack/เริ่มพูดบรรทัดแรกได้เลยค.wav",
     "next_line": "soundtrack/เริ่มพูดบรรทัดถัดไปได้เล.wav",
     "check_number": "soundtrack/เลขที่คุณเห็น.wav",
-    "check_glasses": "soundtrack/คุณใส่แว่น.wav",
+    "check_glasses": "soundtrack/คุณใส่แว่นสายตาใช่หรือไม่.wav",
     "call_nurse": "soundtrack/กำลังเรียกพยาบาล.wav",
     "nurse": "soundtrack/พยาบาลกำลังมา.wav",
     "check_other_number": "soundtrack/คุณเห็นเลขอื่นอีกใช่หรือไม่.wav",
