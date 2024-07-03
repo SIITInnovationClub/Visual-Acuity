@@ -398,4 +398,4 @@ def convert_string_to_number(array):
 def check_next_line(current, all, time):
     if current != all:
         playsound_util(playsound_file_path["next_line"])
-        time.sleep(1)
+        time.sleep(2)
