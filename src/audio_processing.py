@@ -19,7 +19,7 @@ class Audio_processing:
             15000  # The chunk size defines the length of time for each analysis frame.
         )
 
-        THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.
+        THRESHOLD = 3000  # Adjust this threshold to fit your environment and microphone sensitivity.
         SILENCE_LIMIT = (
             2  # Time in seconds to wait for silence before stopping recording.
         )
