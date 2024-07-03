@@ -28,8 +28,8 @@ playsound_file_path = {
     "check_glasses": "soundtrack/คุณใส่แว่น.wav",
     "call_nurse": "soundtrack/กำลังเรียกพยาบาล.wav",
     "nurse": "soundtrack/พยาบาลกำลังมา.wav",
-    "check_other_number": "soundtrack/คุณเห็นเลขอื่นอีกหรือไม่.wav",
-    "say_other_number": "soundtrack/พูดเลขที่คุณเห็นเพิ่มหลังเสียงสัญญาณ.wav"
+    "check_other_number": "soundtrack/คุณเห็นเลขอื่นอีกใช่หรือไม่.wav",
+    "say_other_number": "soundtrack/พูดเลขที่คุณเห็นเพิ่มหลังเสียงสัญญาณ.wav",
 }
 
 
