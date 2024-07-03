@@ -16,7 +16,7 @@ class Audio_processing:
         CHANNELS = 1
         RATE = 35000
         CHUNK = (
-            10000  # The chunk size defines the length of time for each analysis frame.
+            15000  # The chunk size defines the length of time for each analysis frame.
         )
 
         THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.
@@ -88,7 +88,7 @@ class Audio_processing:
         CHANNELS = 1
         RATE = 35000
         CHUNK = (
-            10000  # The chunk size defines the length of time for each analysis frame.
+            15000  # The chunk size defines the length of time for each analysis frame.
         )
 
         THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.

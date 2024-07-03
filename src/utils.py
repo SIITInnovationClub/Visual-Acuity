@@ -232,9 +232,8 @@ def repeat_test_user_vision(
                 playsound_util(playsound_file_path["cannot_catch"])
         return hyp_text
 
-def other_number(
-    AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
-):
+
+def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO):
     hyp_text = ""
     while hyp_text == "":
         playsound_util(playsound_file_path["say_other_number"])
@@ -265,7 +264,7 @@ def other_number(
                 break
             elif user_respond in NO:
                 print("NO : Go back")
-                hyp_text = repeat_test_user_vision(
+                hyp_text = other_number(
                     AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
                 )
                 break
@@ -273,6 +272,7 @@ def other_number(
                 print("Don't understand, please say it again.")
                 playsound_util(playsound_file_path["cannot_catch"])
         return hyp_text
+
 
 # def repeat_test_user_vision_2(
 #     AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
