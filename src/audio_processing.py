@@ -2,7 +2,6 @@ import pyaudio
 import audioop
 import matplotlib.pyplot as plt
 import numpy as np
-import wave
 from src.constants import *
 
 
@@ -40,18 +39,18 @@ class Audio_processing:
 
         while True:
             try:
-                data = stream.read(CHUNK)
+                data = stream.read(CHUNK, True)
                 frames.append(data)
                 rms = audioop.rms(
                     data, 2
                 )  # Calculate the RMS energy of the audio chunk.
 
-                if rms < THRESHOLD:
-                    silence_frames += 1
-                else:
+                if rms >= THRESHOLD:
                     silence_frames = (
                         0  # Reset silence counter if there's audio activity.
                     )
+                else:
+                    silence_frames += 1
 
                 if silence_frames > int(RATE / CHUNK) * SILENCE_LIMIT:
                     print("Silence detected. Stopping recording.")
@@ -80,41 +79,3 @@ class Audio_processing:
         plt.grid(True)
         plt.legend()
         plt.show()
-
-    def record_audio_from_test(self, output_filename):
-
-        # Parameters for audio recording
-        FORMAT = pyaudio.paInt16
-        CHANNELS = 1
-        RATE = 35000
-        CHUNK = (
-            15000  # The chunk size defines the length of time for each analysis frame.
-        )
-
-        THRESHOLD = 1500  # Adjust this threshold to fit your environment and microphone sensitivity.
-        SILENCE_LIMIT = (
-            2  # Time in seconds to wait for silence before stopping recording.
-        )
-        p = pyaudio.PyAudio()
-        # Open the microphone stream
-        stream = p.open(
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=RATE,
-            input=True,
-            frames_per_buffer=CHUNK,
-        )
-        # Close the audio stream
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-
-        wf = wave.open(output_filename, "wb")
-        wf.setnchannels(CHANNELS)
-        wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(b"".join(frames))
-        wf.close()
-
-        audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
-        return audio_data

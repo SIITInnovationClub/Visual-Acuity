@@ -99,7 +99,10 @@ if __name__ == "__main__":
 
         # for test only
         # fix data to check voice recon
-        result_append = [["6", "5"], ["2", "3", "9"]]
+        result_append = [
+            ["6", "5"],
+            ["2", "3", "9"],
+        ]
 
         print("Finished image processing")
         print("\n* Test user's vision *")
