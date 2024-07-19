@@ -55,7 +55,7 @@ if __name__ == "__main__":
         playsound_util(playsound_file_path["process_pic"])
 
         # use for keep data from picture
-        # result_append = IMG_processor.return_ocr_result()
+        # result_append ,scoring = IMG_processor.return_ocr_result()
 
         # for test only
         # fix data to check voice recon
@@ -86,78 +86,14 @@ if __name__ == "__main__":
             correct_test = 0
             count_line += 1
             ref_text = TEXT_processor.process_digit_thai(i)
-            while True:
-                AUDIO_processor.arrayNum = len(i)
-                speech_text = AUDIO_processor.record_audio()
-                hyp_text = TEXT_processor.process_text(speech_text)
-                print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
-
-                # Not number
-                if hyp_text == "":
-                    print("We can't translate it to number, please say it again.")
-                    playsound_util(playsound_file_path["cannot_catch"])
-
-                # Number
-                elif hyp_text != "":
-                    while True:
-                        repeat_answer(hyp_text.split(" "))
-                        AUDIO_processor.arrayNum = 1
-                        res_text = AUDIO_processor.record_audio()
-                        user_respond = TEXT_processor.process_user_respond(res_text)
-                        print(user_respond)
-                        print(user_respond in YES, user_respond in NO)
-                        if user_respond in YES:
-                            print("YES : Next step")
-                            break
-                        elif user_respond in NO:
-                            print("NO : Go back")
-                            hyp_text = repeat_test_user_vision(
-                                AUDIO_processor,
-                                SPEECH_processor,
-                                TEXT_processor,
-                                i,
-                            )
-                            break
-                        else:
-                            print("Don't understand, please say it again.")
-                            playsound_util(playsound_file_path["cannot_catch"])
-
-                    print(hyp_text)
-                    print(f"{hyp_text.split(" ")}")
-
-                    if diff_length_array(hyp_text.split(" "), i):
-                        while True:
-                            playsound_util(playsound_file_path["check_other_number"])
-                            AUDIO_processor.arrayNum = 1
-                            res_text = AUDIO_processor.record_audio()
-                            print("PURE_TEXT : %s" % (res_text))
-                            user_respond = TEXT_processor.process_user_respond(res_text)
-                            print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
-                            print("* User Response *")
-                            if user_respond in YES:
-                                print("YES")
-                                new_number = other_number(
-                                    AUDIO_processor,
-                                    SPEECH_processor,
-                                    TEXT_processor,
-                                    i,
-                                    len(i) - len(hyp_text.split(" ")),
-                                )
-                                hyp_text = hyp_text + " " + new_number
-                                break
-
-                            elif user_respond in NO:
-                                print("NO")
-                                break
-                            else:
-                                print("Don't understand, please say it again.")
-                                playsound_util(playsound_file_path["cannot_catch"])
-
-                        check_next_line(count_line, len(result_append))
-                        break
-                    else:
-                        check_next_line(count_line, len(result_append))
-                        break
+            hyp_text = test_user(
+                AUDIO_processor,
+                TEXT_processor,
+                SPEECH_processor,
+                i,
+                count_line,
+                result_append,
+            )
             # end testing line
 
             # output
