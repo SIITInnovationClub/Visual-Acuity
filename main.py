@@ -7,7 +7,7 @@
 from src.constants import *
 from src.image_processing import Image_processing
 from src.audio_processing import Audio_processing
-from src.text_processing import NO, YES, Text_processing
+from src.text_processing import Text_processing
 from src.speech_recognition import Speech_recognition
 from src.utils import *
 import time
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     # Check glasses
     print("* Check glasses for user *")
-    glasses_user = check_glasses(AUDIO_processor, TEXT_processor, YES, NO)
+    glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
     time.sleep(1)
 
     # loop by number of pictures
@@ -116,8 +116,6 @@ if __name__ == "__main__":
                                 SPEECH_processor,
                                 TEXT_processor,
                                 i,
-                                YES,
-                                NO,
                             )
                             break
                         else:
@@ -143,8 +141,6 @@ if __name__ == "__main__":
                                     SPEECH_processor,
                                     TEXT_processor,
                                     i,
-                                    YES,
-                                    NO,
                                     len(i) - len(hyp_text.split(" ")),
                                 )
                                 hyp_text = hyp_text + " " + new_number
@@ -164,7 +160,7 @@ if __name__ == "__main__":
                         break
             # end testing line
 
-        # output
+            # output
             print(f"hyp_text: {hyp_text}")
             print(f"ref_text: {ref_text}")
             print("=========================================")
@@ -178,8 +174,8 @@ if __name__ == "__main__":
             resultg = result(len(i), correct_test)
             conclude_score.append((f"picture_number_{num_pic}", resultg))
             result_global = resultg
-    
-    # change picture
+
+        # change picture
         if total_pic != num_pic:
             playsound_util(playsound_file_path["change_pic"])
 
