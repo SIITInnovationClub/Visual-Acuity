@@ -1,9 +1,13 @@
-# for activate the venv
+# Running Part
+# Step 1.
+# Use for activating the venv
 # source path/to/venv/bin/activate
-
-# for run the code
+# Step 2.
+# Use for running the code
 # python3 -m main
 
+# Coding Part
+# Import all necessary files
 from src.constants import *
 from src.image_processing import Image_processing
 from src.audio_processing import Audio_processing
@@ -12,24 +16,28 @@ from src.speech_recognition import Speech_recognition
 from src.utils import *
 import time
 
+# Start running
 if __name__ == "__main__":
-    # Set up system
+    # START "Set up system"
     print("* Set up *")
-    # Create instance of each class.
+    # SUB_TASK "Create instance of each class."
     IMG_processor = Image_processing()
     SPEECH_processor = Speech_recognition()
     AUDIO_processor = Audio_processing(0, SPEECH_processor, "")
     TEXT_processor = Text_processing()
-    # testing image
-    # preprocess
+
+    # SUB_TASK "Test with image processing."
+    # SUB_TASK "Preprocess"
     # result = recognize_text(im_1_path)
     # img_1 = cv2.imread(im_1_path)
     # img_1 = cv2.cvtColor(img_1, cv2.COLOR_BGR2RGB)
     # plt.imshow(img_1)
     # print(overlay_ocr_text(im_1_path, '1_carplate'))
-    print("* Set up finished *")
 
-    # Set up variables
+    print("* Set up finished *")
+    # END "Set up system"
+
+    # Set up necessary variables
     glasses_user = False
     total_score = 0
     num_pic = 2
@@ -38,27 +46,27 @@ if __name__ == "__main__":
     result_global = ""
     change_page = True
 
-    # Start
+    # Start testing
     print("\nStart...")
+    # Welcome
     playsound_util(playsound_file_path["welcome"])
     time.sleep(1)
 
-    # Check glasses
+    # Check glasses for user
     print("* Check glasses for user *")
     glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
     time.sleep(1)
 
-    # Loop by number of pictures
+    # START "Testing for all pictures"
     for i in range(num_pic):
-        # Image processing
+        # START "Image Processing"
         print("\nWait for image processing....")
         playsound_util(playsound_file_path["process_pic"])
 
-        # use for keep data from picture
+        # Use "Real Image Processing"
         # result_append ,scoring = IMG_processor.return_ocr_result()
 
-        # for test only
-        # fix data to check voice recon
+        # Use "Mock Image Processing" (edit here for testing only voice)
         result_append = [
             ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
             ["9", "8", "7", "6", "5", "4", "3", "2", "1"],
@@ -66,22 +74,18 @@ if __name__ == "__main__":
             ["2", "3", "9"],
         ]
         print("Finished image processing")
+        # END "Image Processing"
 
-        # testing
         print("\n* Test user's vision *")
         print(f"There are #{len(result_append)} lines ")
         print(f"All of numbers in this image are {result_append}")
-        # if (change_page):
         print("\n* First line *")
         playsound_util(playsound_file_path["first_line"])
-        # change_page=False
         count_line = 0
         total_pic += 1
 
-        # loop by lines in picture
+        # START "Testing for all lines in that picture"
         for i in result_append:
-
-            # start testing line
             print(i)
             correct_test = 0
             count_line += 1
@@ -94,9 +98,8 @@ if __name__ == "__main__":
                 count_line,
                 result_append,
             )
-            # end testing line
 
-            # output
+            # Show output for testing by a line
             print(f"hyp_text: {hyp_text}")
             print(f"ref_text: {ref_text}")
             print("=========================================")
@@ -110,17 +113,18 @@ if __name__ == "__main__":
             resultg = result(len(i), correct_test)
             conclude_score.append((f"picture_number_{num_pic}", resultg))
             result_global = resultg
+        # END "Testing for all lines in that picture"
 
-        # change picture
+        # Change picture
         if total_pic != num_pic:
             playsound_util(playsound_file_path["change_pic"])
 
-    # end testing picture
     playsound_util(playsound_file_path["end_of_process"])
     print(f"Score: {total_score}")
     print(result_global)
+    # END "Testing for all pictures"
 
-    # result
+    # Result of testing
     if result_global != "":
         line_no_and_with = extract_line_no(result_global)
         for i in str(line_no_and_with[0]):
