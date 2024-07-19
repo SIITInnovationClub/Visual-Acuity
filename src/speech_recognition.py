@@ -1,7 +1,7 @@
-import torch
-import torchaudio
-from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2CTCTokenizer
-from pythainlp import sent_tokenize, word_tokenize
+import torch # type: ignore
+import torchaudio # type: ignore
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, Wav2Vec2CTCTokenizer # type: ignore
+from pythainlp import sent_tokenize, word_tokenize # type: ignore
 class Speech_recognition():
     def __init__(self):
         self.model_name = "wannaphong/wav2vec2-large-xlsr-53-th-cv8-deepcut"
