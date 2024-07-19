@@ -220,7 +220,7 @@ def repeat_test_user_vision(AUDIO_processor, SPEECH_processor, TEXT_processor, i
             elif user_respond in NO:
                 print("NO : Go back")
                 hyp_text = repeat_test_user_vision(
-                    AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
+                    AUDIO_processor, SPEECH_processor, TEXT_processor, i
                 )
                 break
             else:
@@ -355,6 +355,7 @@ def check_glasses(AUDIO_processor, TEXT_processor):
 def test_user(
     AUDIO_processor, TEXT_processor, SPEECH_processor, i, count_line, result_append
 ):
+    hyp_text = ""
     while True:
         AUDIO_processor.arrayNum = len(i)
         speech_text = AUDIO_processor.record_audio()
