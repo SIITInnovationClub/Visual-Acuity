@@ -184,11 +184,11 @@ def repeat_test_user_vision(AUDIO_processor, SPEECH_processor, TEXT_processor, i
             AUDIO_processor.arrayNum = 1
             AUDIO_processor.type = "user"
             user_respond = AUDIO_processor.record_audio(TEXT_processor)
-            print(user_respond in YES, user_respond in NO)
-            if user_respond in YES:
+            print("User Response : %s" % user_respond)
+            if user_respond == "YES":
                 print("YES : Next step")
                 break
-            elif user_respond in NO:
+            elif user_respond == "NO":
                 print("NO : Go back")
                 hyp_text = repeat_test_user_vision(
                     AUDIO_processor, SPEECH_processor, TEXT_processor, i
@@ -221,11 +221,11 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, arrayNum)
             AUDIO_processor.arrayNum = 1
             AUDIO_processor.type = "user"
             user_respond = AUDIO_processor.record_audio(TEXT_processor)
-            print(user_respond in YES, user_respond in NO)
-            if user_respond in YES:
+            print("User Response : %s" % user_respond)
+            if user_respond == "YES":
                 print("YES : Next step")
                 break
-            elif user_respond in NO:
+            elif user_respond == "NO":
                 print("NO : Go back")
                 hyp_text = other_number(
                     AUDIO_processor,
@@ -302,14 +302,12 @@ def check_glasses(AUDIO_processor, TEXT_processor):
         AUDIO_processor.arrayNum = 1
         AUDIO_processor.type = "user"
         user_respond = AUDIO_processor.record_audio(TEXT_processor)
-        print("* User Response *")
-        print("YES : %s" % (user_respond in YES))
-        print("NO  : %s" % (user_respond in NO))
-        if user_respond in YES:
+        print("User Response : %s" % user_respond)
+        if user_respond == "YES":
             glasses_user = True
             print("USER : wear the glasses")
             break
-        elif user_respond in NO:
+        elif user_respond == "NO":
             print("USER : don't wear the glasses")
             break
         else:
@@ -339,11 +337,11 @@ def test_user(
                 AUDIO_processor.arrayNum = 1
                 AUDIO_processor.type = "user"
                 user_respond = AUDIO_processor.record_audio(TEXT_processor)
-                print(user_respond in YES, user_respond in NO)
-                if user_respond in YES:
+                print("User Response : %s" % user_respond)
+                if user_respond == "YES":
                     print("YES : Next step")
                     break
-                elif user_respond in NO:
+                elif user_respond == "NO":
                     print("NO : Go back")
                     hyp_text = repeat_test_user_vision(
                         AUDIO_processor,
@@ -365,9 +363,8 @@ def test_user(
                     AUDIO_processor.arrayNum = 1
                     AUDIO_processor.type = "user"
                     user_respond = AUDIO_processor.record_audio(TEXT_processor)
-                    print("* User Response *")
-                    if user_respond in YES:
-                        print("YES")
+                    print("User Response : %s" % user_respond)
+                    if user_respond == "YES":
                         new_number = other_number(
                             AUDIO_processor,
                             SPEECH_processor,
@@ -378,8 +375,7 @@ def test_user(
                         hyp_text = hyp_text + " " + new_number
                         break
 
-                    elif user_respond in NO:
-                        print("NO")
+                    elif user_respond == "NO":
                         break
                     else:
                         print("Don't understand, please say it again.")
@@ -391,51 +387,3 @@ def test_user(
                 check_next_line(count_line, len(result_append))
                 break
     return hyp_text
-
-
-# YES AND NO WITH SYNONYM
-YES = [
-    "ถูกต้อง",
-    "ถูกต้องครับ",
-    "ถูกต้องคับ",
-    "ถูกต้องค่ะ",
-    "ใช่",
-    "ใช่ครับ",
-    "ใช่คับ",
-    "ใช่ค่ะ",
-    "ใช่คะ",
-    "ใช่จ้า",
-    "ใช่ใช่",
-    "ช่าย",
-    "ชั่ย",
-    "ช่าย",
-]
-
-NO = [
-    "ผิด",
-    "ผิดค่ะ",
-    "ผิดครับ",
-    "ไม่ใช่",
-    "ไม่",
-    "ไม่ใช่ครับ",
-    "ไม่ใช่คับ",
-    "ไม่ครับ",
-    "ไม่คับ",
-    "ไม่ค่ะ",
-    "ไม่คะ",
-    "ไหม้",
-    "ไม่ไม่",
-]
-
-
-def check_array_value(array):
-    same = False
-    for i in array:
-        count = 0
-        for j in array:
-            if i == j:
-                count += 1
-            if count > 1:
-                same = True
-                return same
-    return same

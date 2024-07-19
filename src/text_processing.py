@@ -1,30 +1,11 @@
+from src.constants import *
+
+
 class Text_processing:
     def __init__(self):
         pass
 
     def process_text(self, text_sample: str) -> str:
-        synonym_one = ["นึก", "นึ่ง", "นึง", "หนุ่ง", "อึ่ง"]
-        synonym_two = ["ส่อง", "ซอง", "โฉง", "สอ"]
-        synonym_three = ["ซ้ำ", "สาง", "สา"]
-        synonym_four = [
-            "สี",
-            "ซี",
-            "เส",
-            "เส่",
-            "สี่ย์",
-            "สิ",
-            "ซี่",
-            "เศ่",
-            "เส่ห์",
-            "สื่",
-            "สื่อ",
-            "สิ่",
-        ]
-        synonym_five = ["ฮา", "ฮ่า", "ห่า", "ฮ่ะ", "อ่า", "ฮะ", "ฮ้ะ", "ห้ะ", "ฮ้อ"]
-        synonym_six = ["ฮก", "ฮ้ก", "ห้ก", "อก", "โหก", "หอก", "อก", "หบ"]
-        synonym_seven = ["เจต", "เจ๋ด", "เจ้ด", "เก็ด"]
-        synonym_eight = ["แปต", "แบ", "แป", "แตก", "แตด"]
-        synonym_nine = ["เก่า", "ก้าว", "เก้"]
         key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
         key = (
             key
@@ -60,34 +41,31 @@ class Text_processing:
                 elif word in synonym_nine:
                     word = "เก้า"
                 result.append(word)
-        # result = ['หนึ่ง', 'สอง', 'สาม', 'สี่']
         hyp_text = ""
         for i, word in enumerate(result):
             if i < (len(result) - 1):
                 hyp_text += word + " "
             else:
                 hyp_text += word
-        # print(f"ASR hypothesis: {hyp_text}")
         return hyp_text
 
     def process_user_respond(self, text_sample: str) -> str:
-        # key = ['ใช่','ไม่']
-        key = ["ถูกต้อง", "ผิด", "ครับ", "ค่ะ", "คะ", "คับ", "ใช่", "ไม่"]
+        key = synonym_yes + synonym_no
         result = []
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
+                if word in synonym_yes:
+                    word = "YES"
+                elif word in synonym_no:
+                    word = "NO"
                 result.append(word)
-        # result = ['ใช่']
-        # res_text = ""
-        res_text = []
-        for word in result:
-            # if(i < (len(result) - 1)):
-            #     res_text += word + " "
-            # else:
-            #     res_text += word
-            res_text.append(word)
-        # print(f"ASR hypothesis: {hyp_text}")
-        return ("").join(res_text)
+        res_text = ""
+        for i, word in enumerate(result):
+            if i < (len(result) - 1):
+                res_text += word + " "
+            else:
+                res_text += word
+        return res_text
 
     # process digit to thai words
     def process_digit_thai(self, digits) -> str:

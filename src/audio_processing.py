@@ -57,7 +57,6 @@ class Audio_processing:
                         print("Pure text: ", speech_text.split(" "))
 
                         if self.type == "user":
-
                             hyp_text = TEXT_processor.process_user_respond(speech_text)
                             print("Translate to user response: %s" % hyp_text)
 
