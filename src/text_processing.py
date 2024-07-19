@@ -3,15 +3,28 @@ class Text_processing:
         pass
 
     def process_text(self, text_sample: str) -> str:
-        synonym_one = ["นึก", "นึ่ง", "นึง"]
-        synonym_two = ["ส่อง", "ซอง"]
-        synonym_three = ["ซ้ำ"]
-        synonym_four = ["สี", "ซี"]
-        synonym_five = ["ฮา", "ฮ่า", "ห่า", "ฮ่ะ"]
-        synonym_six = ["ฮก", "ฮ้ก", "ห้ก","อก"]
-        synonym_seven = ["เจต", "เจ๋ด", "เจ้ด"]
-        synonym_eight = ["แปต"]
-        synonym_nine = ["เก่า"]
+        synonym_one = ["นึก", "นึ่ง", "นึง", "หนุ่ง", "อึ่ง"]
+        synonym_two = ["ส่อง", "ซอง", "โฉง", "สอ"]
+        synonym_three = ["ซ้ำ", "สาง", "สา"]
+        synonym_four = [
+            "สี",
+            "ซี",
+            "เส",
+            "เส่",
+            "สี่ย์",
+            "สิ",
+            "ซี่",
+            "เศ่",
+            "เส่ห์",
+            "สื่",
+            "สื่อ",
+            "สิ่",
+        ]
+        synonym_five = ["ฮา", "ฮ่า", "ห่า", "ฮ่ะ", "อ่า", "ฮะ", "ฮ้ะ", "ห้ะ", "ฮ้อ"]
+        synonym_six = ["ฮก", "ฮ้ก", "ห้ก", "อก", "โหก", "หอก", "อก", "หบ"]
+        synonym_seven = ["เจต", "เจ๋ด", "เจ้ด", "เก็ด"]
+        synonym_eight = ["แปต", "แบ", "แป", "แตก", "แตด"]
+        synonym_nine = ["เก่า", "ก้าว", "เก้"]
         key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
         key = (
             key
@@ -26,7 +39,6 @@ class Text_processing:
             + synonym_nine
         )
         result = []
-        text, *_ = text_sample[0]
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
                 if word in synonym_one:
@@ -62,7 +74,6 @@ class Text_processing:
         # key = ['ใช่','ไม่']
         key = ["ถูกต้อง", "ผิด", "ครับ", "ค่ะ", "คะ", "คับ", "ใช่", "ไม่"]
         result = []
-        text, *_ = text_sample[0]
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
                 result.append(word)

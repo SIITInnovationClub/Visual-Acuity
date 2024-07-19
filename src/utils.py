@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np  # type: ignore
 import re
 from src.constants import *
 from datetime import datetime
@@ -190,16 +190,13 @@ def call_nurse():
     return
 
 
-def repeat_test_user_vision(
-    AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
-):
+def repeat_test_user_vision(AUDIO_processor, SPEECH_processor, TEXT_processor, i):
     hyp_text = ""
     while hyp_text == "":
         playsound_util(playsound_file_path["repeat_same_line"])
-        voice_recorded = AUDIO_processor.record_audio()
-        speech_text = SPEECH_processor.get_text(voice_recorded)
-        print("PURE_TEXT : %s" % (speech_text))
-        ref_text = TEXT_processor.process_digit_thai(i)
+        AUDIO_processor.arrayNum = len(i)
+        speech_text = AUDIO_processor.record_audio()
+        # ref_text = TEXT_processor.process_digit_thai(i)
         hyp_text = TEXT_processor.process_text(speech_text)
         print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
 
@@ -212,9 +209,8 @@ def repeat_test_user_vision(
     if hyp_text != "":
         while True:
             repeat_answer(hyp_text.split(" "))
-            res_rec = AUDIO_processor.record_audio()
-            res_text = SPEECH_processor.get_text(res_rec)
-            print(res_text)
+            AUDIO_processor.arrayNum = 1
+            res_text = AUDIO_processor.record_audio()
             user_respond = TEXT_processor.process_user_respond(res_text)
             print(user_respond)
             print(user_respond in YES, user_respond in NO)
@@ -224,7 +220,7 @@ def repeat_test_user_vision(
             elif user_respond in NO:
                 print("NO : Go back")
                 hyp_text = repeat_test_user_vision(
-                    AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
+                    AUDIO_processor, SPEECH_processor, TEXT_processor, i
                 )
                 break
             else:
@@ -233,14 +229,13 @@ def repeat_test_user_vision(
         return hyp_text
 
 
-def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO):
+def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, arrayNum):
     hyp_text = ""
     while hyp_text == "":
         playsound_util(playsound_file_path["say_other_number"])
-        voice_recorded = AUDIO_processor.record_audio()
-        speech_text = SPEECH_processor.get_text(voice_recorded)
-        print("PURE_TEXT : %s" % (speech_text))
-        ref_text = TEXT_processor.process_digit_thai(i)
+        AUDIO_processor.arrayNum = arrayNum
+        speech_text = AUDIO_processor.record_audio()
+        # ref_text = TEXT_processor.process_digit_thai(i)
         hyp_text = TEXT_processor.process_text(speech_text)
         print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
 
@@ -253,9 +248,8 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO):
     if hyp_text != "":
         while True:
             repeat_answer(hyp_text.split(" "))
-            res_rec = AUDIO_processor.record_audio()
-            res_text = SPEECH_processor.get_text(res_rec)
-            print(res_text)
+            AUDIO_processor.arrayNum = 1
+            res_text = AUDIO_processor.record_audio()
             user_respond = TEXT_processor.process_user_respond(res_text)
             print(user_respond)
             print(user_respond in YES, user_respond in NO)
@@ -265,85 +259,19 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO):
             elif user_respond in NO:
                 print("NO : Go back")
                 hyp_text = other_number(
-                    AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
+                    AUDIO_processor,
+                    SPEECH_processor,
+                    TEXT_processor,
+                    i,
+                    YES,
+                    NO,
+                    len(i) - len(hyp_text),
                 )
                 break
             else:
                 print("Don't understand, please say it again.")
                 playsound_util(playsound_file_path["cannot_catch"])
         return hyp_text
-
-
-# def repeat_test_user_vision_2(
-#     AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
-# ):
-#     hyp_text = ""
-#     while hyp_text == "":
-#         playsound_util(playsound_file_path["repeat_same_line"])
-#         voice_recorded = AUDIO_processor.record_audio()
-#         speech_text = SPEECH_processor.get_text(voice_recorded)
-#         print("PURE_TEXT : %s" % (speech_text))
-#         ref_text = TEXT_processor.process_digit_thai(i)
-#         hyp_text = TEXT_processor.process_text(speech_text)
-#         print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
-
-#         # Not number
-#         if hyp_text == "":
-#             print("We can't translate it to number, please say it again.")
-#             playsound_util(playsound_file_path["cannot_catch"])
-
-#     # Number
-#     if hyp_text != "":
-#         while True:
-#             repeat_answer(hyp_text.split(" "))
-#             res_rec = AUDIO_processor.record_audio()
-#             res_text = SPEECH_processor.get_text(res_rec)
-#             print(res_text)
-#             user_respond = TEXT_processor.process_user_respond(res_text)
-#             print(user_respond)
-#             print(user_respond in YES, user_respond in NO)
-#             if user_respond in YES:
-#                 print("YES : Next step")
-#                 break
-#             elif user_respond in NO:
-#                 print("NO : Go back")
-#                 hyp_text = repeat_test_user_vision(
-#                     AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
-#                 )
-#                 break
-#             else:
-#                 print("Don't understand, please say it again.")
-#                 playsound_util(playsound_file_path["cannot_catch"])
-
-#         print(hyp_text)
-#         print(f"{hyp_text.split(" ")}")
-#         if diff_two_array(hyp_text.split(" "), i):
-#             while True:
-#                 playsound_util(playsound_file_path["check_number"])
-#                 res_rec = AUDIO_processor.record_audio()
-#                 res_text = SPEECH_processor.get_text(res_rec)
-#                 print("PURE_TEXT : %s" % (res_text))
-#                 user_respond = TEXT_processor.process_user_respond(res_text)
-#                 print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
-#                 print("* User Response *")
-#                 if user_respond in YES:
-#                     print("YES")
-#                     user_result = False
-#                     break
-#                 elif user_respond in NO:
-#                     user_result = repeat_test_user_vision_2(
-#                         AUDIO_processor, SPEECH_processor, TEXT_processor, i, YES, NO
-#                     )
-#                     break
-#                 else:
-#                     print("Don't understand, please say it again.")
-#                     playsound_util(playsound_file_path["cannot_catch"])
-#             return user_result
-
-#         else:
-#             print("Test correct")
-#             user_result = True
-#             return user_result
 
 
 def diff_length_array(input, check):
@@ -395,7 +323,143 @@ def convert_string_to_number(array):
     return new_array
 
 
-def check_next_line(current, all, time):
+def check_next_line(current, all):
     if current != all:
         playsound_util(playsound_file_path["next_line"])
-        time.sleep(2)
+
+
+def check_glasses(AUDIO_processor, TEXT_processor):
+    glasses_user = False
+    while True:
+        playsound_util(playsound_file_path["check_glasses"])
+        AUDIO_processor.arrayNum = 1
+        res_text = AUDIO_processor.record_audio()
+        user_respond = TEXT_processor.process_user_respond(res_text)
+        print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
+        print("* User Response *")
+        print("YES : %s" % (user_respond in YES))
+        print("NO  : %s" % (user_respond in NO))
+        if user_respond in YES:
+            glasses_user = True
+            print("USER : wear the glasses")
+            break
+        elif user_respond in NO:
+            print("USER : don't wear the glasses")
+            break
+        else:
+            print("Don't understand, please say it again.")
+            playsound_util(playsound_file_path["cannot_catch"])
+    return glasses_user
+
+
+def test_user(
+    AUDIO_processor, TEXT_processor, SPEECH_processor, i, count_line, result_append
+):
+    hyp_text = ""
+    while True:
+        AUDIO_processor.arrayNum = len(i)
+        speech_text = AUDIO_processor.record_audio()
+        hyp_text = TEXT_processor.process_text(speech_text)
+        print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
+
+        # Not number
+        if hyp_text == "":
+            print("We can't translate it to number, please say it again.")
+            playsound_util(playsound_file_path["cannot_catch"])
+
+        # Number
+        elif hyp_text != "":
+            while True:
+                repeat_answer(hyp_text.split(" "))
+                AUDIO_processor.arrayNum = 1
+                res_text = AUDIO_processor.record_audio()
+                user_respond = TEXT_processor.process_user_respond(res_text)
+                print(user_respond)
+                print(user_respond in YES, user_respond in NO)
+                if user_respond in YES:
+                    print("YES : Next step")
+                    break
+                elif user_respond in NO:
+                    print("NO : Go back")
+                    hyp_text = repeat_test_user_vision(
+                        AUDIO_processor,
+                        SPEECH_processor,
+                        TEXT_processor,
+                        i,
+                    )
+                    break
+                else:
+                    print("Don't understand, please say it again.")
+                    playsound_util(playsound_file_path["cannot_catch"])
+
+            print(hyp_text)
+            print(f"{hyp_text.split(" ")}")
+
+            if diff_length_array(hyp_text.split(" "), i):
+                while True:
+                    playsound_util(playsound_file_path["check_other_number"])
+                    AUDIO_processor.arrayNum = 1
+                    res_text = AUDIO_processor.record_audio()
+                    print("PURE_TEXT : %s" % (res_text))
+                    user_respond = TEXT_processor.process_user_respond(res_text)
+                    print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
+                    print("* User Response *")
+                    if user_respond in YES:
+                        print("YES")
+                        new_number = other_number(
+                            AUDIO_processor,
+                            SPEECH_processor,
+                            TEXT_processor,
+                            i,
+                            len(i) - len(hyp_text.split(" ")),
+                        )
+                        hyp_text = hyp_text + " " + new_number
+                        break
+
+                    elif user_respond in NO:
+                        print("NO")
+                        break
+                    else:
+                        print("Don't understand, please say it again.")
+                        playsound_util(playsound_file_path["cannot_catch"])
+
+                check_next_line(count_line, len(result_append))
+                break
+            else:
+                check_next_line(count_line, len(result_append))
+                break
+    return hyp_text
+
+
+# YES AND NO WITH SYNONYM
+YES = [
+    "ถูกต้อง",
+    "ถูกต้องครับ",
+    "ถูกต้องคับ",
+    "ถูกต้องค่ะ",
+    "ใช่",
+    "ใช่ครับ",
+    "ใช่คับ",
+    "ใช่ค่ะ",
+    "ใช่คะ",
+    "ใช่จ้า",
+    "ใช่ใช่",
+    "ช่าย",
+    "ชั่ย",
+]
+
+NO = [
+    "ผิด",
+    "ผิดค่ะ",
+    "ผิดครับ",
+    "ไม่ใช่",
+    "ไม่",
+    "ไม่ใช่ครับ",
+    "ไม่ใช่คับ",
+    "ไม่ครับ",
+    "ไม่คับ",
+    "ไม่ค่ะ",
+    "ไม่คะ",
+    "ไหม้",
+    "ไม่ไม่",
+]
