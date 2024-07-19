@@ -39,3 +39,7 @@ dist/
 data/
 *.csv
 *.h5
+/src/__pycache__
+
+# Ignore virtual environment directory
+venv/

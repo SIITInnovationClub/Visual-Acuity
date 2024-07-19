@@ -1,12 +1,11 @@
-import easyocr
-import cv2
-import matplotlib.pyplot as plt
+import easyocr  # type: ignore
+import cv2  # type: ignore
 
 
 class Image_processing:
 
     def __init__(self):
-        pass
+        self.repeat_count = 0
 
     def pre_process(self):
         pass
@@ -24,7 +23,6 @@ class Image_processing:
 
     def process_ocr_results(self, ocr_results, previous_texts, repeat_threshold=3):
         """Process OCR results to get unique numbers in lines."""
-        # Split digits and flatten list
         all_digits = [
             item for result in ocr_results for item in self.split_digits(result)
         ]
@@ -40,10 +38,8 @@ class Image_processing:
             if not added_to_line:
                 line_groups.append([(bbox1, digit1)])
 
-        # Convert line groups to text lines
         lines = ["".join(digit for _, digit in line) for line in line_groups]
 
-        # Check for repeated results based on text lines
         if lines == previous_texts:
             self.repeat_count += 1
             if self.repeat_count >= repeat_threshold and lines:
@@ -53,65 +49,106 @@ class Image_processing:
 
         return lines
 
+    def extract_scoring_index(self, line):
+        """Extract scoring index from a line of numbers."""
+        zero_index = line.find("0")
+        if zero_index != -1:
+            score = line[zero_index + 1 :]
+            if score:
+                return f"20/{line[:zero_index]}"
+        return None
+
     def return_ocr_result(self):
         self.repeat_count = 0
 
         # Read the image
-        cap = cv2.VideoCapture(0)
+        img_path = "/Users/ammaster10/Documents/Github/Visual-Acuity/IMG_1269.jpg"
+        frame = cv2.imread(img_path)
+
+        if frame is None:
+            print("Error: Image not found or cannot be loaded.")
+            return None, None
 
         # Instance text detection
         reader = easyocr.Reader(["en"], gpu=False)
 
-        # Detect text on image
         threshold = 0.1
         previous_texts = []
         actual_output = []
-        while True:
-            try:
-                ret, frame = cap.read()
-                text_raw = reader.readtext(frame)
-                current_results = [
-                    (bbox, text, score)
-                    for bbox, text, score in text_raw
-                    if score > threshold
-                ]
 
-                # Process OCR results
-                output = self.process_ocr_results(current_results, previous_texts)
-                actual_output.append(output)
-                if output is None:
-                    print("Repeated results. Breaking loop.")
-                    break
+        # try:
+        text_raw = reader.readtext(frame)
+        current_results = [
+            (bbox, text, score) for bbox, text, score in text_raw if score > threshold
+        ]
 
-                # Draw bounding boxes and texts
-                for bbox, text, score in current_results:
-                    if score > threshold:
-                        cv2.rectangle(frame, bbox[0], bbox[2], (0, 255, 0), 5)
-                        cv2.putText(
-                            frame,
-                            text,
-                            bbox[0],
-                            cv2.FONT_HERSHEY_SIMPLEX,
-                            1,
-                            (255, 0, 0),
-                            2,
-                        )
+        output = self.process_ocr_results(current_results, previous_texts)
+        actual_output.append(output)
+        if output is None:
+            print("Repeated results. Breaking loop.")
+            return None, None
 
-                # Update previous texts
-                previous_texts = output
-                print(output)
-                # cv2.imshow("Text Recognition", frame)
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    break
+        # Draw bounding boxes and texts
+        for bbox, text, score in current_results:
+            if score > threshold:
+                top_left = tuple(map(int, bbox[0]))
+                bottom_right = tuple(map(int, bbox[2]))
+                if (
+                    len(top_left) == 2 and len(bottom_right) == 2
+                ):  # Ensure valid coordinates
+                    cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 5)
+                    cv2.putText(
+                        frame,
+                        text,
+                        top_left,
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 0, 0),
+                        2,
+                    )
 
-            except Exception as e:
-                print("ERROR OCCUR", e)
+        previous_texts = output
+        print("Processed OCR Output:", output)
 
-        cap.release()
+        # Display the image with drawn rectangles and text
+        cv2.imshow("Text Recognition", frame)
+        # cv2.waitKey(0)  # Wait indefinitely until a key is pressed
         cv2.destroyAllWindows()
+
+        # except Exception as e:
+        #     print("ERROR OCCUR", e)
+        #     return None, None
+
         final_output = []
+        scoring_index = []
 
-        for i in actual_output[-2]:
-            final_output.append(list(i))
+        # Process final output to extract scoring index
+        print("Output: ", output)
 
-        return final_output
+        # Output:  ['6096824', '0084846', '443242', '3042633']
+        # Result should be
+
+        # Scoring Index: ['20/60', '20/84', '20/44', '20/30']
+        # Final Output: ['96824', '84846', '43242', '42633']
+        final_output = []
+        scoring_index = []
+
+        if output:
+            for line in output:
+                temp_output = []
+                temp_score = []
+                j = 0
+                for i in line:
+                    if j == 0 or i == "0":
+                        temp_score.append(i)
+                    else:
+                        temp_output.append(i)
+                    j += 1
+
+                final_output.append((temp_output))
+                scoring_index.append((temp_score))
+
+        print("Final Output:", final_output)
+        print("Scoring Index:", scoring_index)
+
+        return final_output, scoring_index
