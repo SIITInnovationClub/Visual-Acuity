@@ -9,36 +9,36 @@ class Text_processing:
         key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
         key = (
             key
-            + synonym_one
-            + synonym_two
-            + synonym_three
-            + synonym_four
-            + synonym_five
-            + synonym_six
-            + synonym_seven
-            + synonym_eight
-            + synonym_nine
+            + synonym["one"]
+            + synonym["two"]
+            + synonym["three"]
+            + synonym["four"]
+            + synonym["five"]
+            + synonym["six"]
+            + synonym["seven"]
+            + synonym["eight"]
+            + synonym["nine"]
         )
         result = []
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
-                if word in synonym_one:
+                if word in synonym["one"]:
                     word = "หนึ่ง"
-                elif word in synonym_two:
+                elif word in synonym["two"]:
                     word = "สอง"
-                elif word in synonym_three:
+                elif word in synonym["three"]:
                     word = "สาม"
-                elif word in synonym_four:
+                elif word in synonym["four"]:
                     word = "สี่"
-                elif word in synonym_five:
+                elif word in synonym["five"]:
                     word = "ห้า"
-                elif word in synonym_six:
+                elif word in synonym["six"]:
                     word = "หก"
-                elif word in synonym_seven:
+                elif word in synonym["seven"]:
                     word = "เจ็ด"
-                elif word in synonym_eight:
+                elif word in synonym["eight"]:
                     word = "แปด"
-                elif word in synonym_nine:
+                elif word in synonym["nine"]:
                     word = "เก้า"
                 result.append(word)
         hyp_text = ""
@@ -50,13 +50,13 @@ class Text_processing:
         return hyp_text
 
     def process_user_respond(self, text_sample: str) -> str:
-        key = synonym_yes + synonym_no
+        key = synonym["yes"] + synonym["no"]
         result = []
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
-                if word in synonym_yes:
+                if word in synonym["yes"]:
                     word = "YES"
-                elif word in synonym_no:
+                elif word in synonym["no"]:
                     word = "NO"
                 result.append(word)
         res_text = ""
