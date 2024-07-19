@@ -1,7 +1,5 @@
-import easyocr
-import cv2
-import numpy as np
-
+import easyocr # type: ignore
+import cv2 # type: ignore
 
 class Image_processing:
 
