@@ -6,8 +6,9 @@ from src.constants import *
 
 
 class Audio_processing:
-    def __init__(self):
-        pass
+    def __init__(self, arrayNum, speechRec):
+        self.arrayNum = arrayNum
+        self.speechRec = speechRec
 
     def record_audio(self):
         # Parameters for audio recording
@@ -18,9 +19,9 @@ class Audio_processing:
             15000  # The chunk size defines the length of time for each analysis frame.
         )
 
-        THRESHOLD = 3000  # Adjust this threshold to fit your environment and microphone sensitivity.
+        THRESHOLD = 1000  # Adjust this threshold to fit your environment and microphone sensitivity.
         SILENCE_LIMIT = (
-            2  # Time in seconds to wait for silence before stopping recording.
+            5  # Time in seconds to wait for silence before stopping recording.
         )
         p = pyaudio.PyAudio()
         # Open the microphone stream
@@ -36,24 +37,36 @@ class Audio_processing:
         playsound_util(playsound_file_path["beep"])
         frames = []
         silence_frames = 0
+        numberInput = 0
+        speech_text = ""
 
         while True:
             try:
-                data = stream.read(CHUNK, True)
-                frames.append(data)
-                rms = audioop.rms(
-                    data, 2
-                )  # Calculate the RMS energy of the audio chunk.
+                if numberInput < self.arrayNum:
+                    data = stream.read(CHUNK, True)
+                    frames.append(data)
+                    rms = audioop.rms(
+                        data, 2
+                    )  # Calculate the RMS energy of the audio chunk.
 
-                if rms >= THRESHOLD:
-                    silence_frames = (
-                        0  # Reset silence counter if there's audio activity.
-                    )
+                    if rms >= THRESHOLD:
+                        audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
+                        speech_text = self.speechRec.get_text(audio_data)
+                        print("Text: %s" % speech_text)
+                        numberInput = len(speech_text.split(" "))
+                        print("NO.input: %d" % numberInput)
+                        silence_frames = (
+                            0  # Reset silence counter if there's audio activity.
+                        )
+                    else:
+                        silence_frames += 1
+
+                    if silence_frames > int(RATE / CHUNK) * SILENCE_LIMIT:
+                        print("Silence detected. Stopping recording.")
+                        break
+
                 else:
-                    silence_frames += 1
-
-                if silence_frames > int(RATE / CHUNK) * SILENCE_LIMIT:
-                    print("Silence detected. Stopping recording.")
+                    print("Done. Stopping recording.")
                     break
 
             except KeyboardInterrupt:
@@ -65,8 +78,7 @@ class Audio_processing:
         stream.close()
         p.terminate()
 
-        audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
-        return audio_data
+        return speech_text
 
     def audio_visualization(audio):
         time = np.arange(len(audio))
