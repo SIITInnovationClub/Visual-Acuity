@@ -1,7 +1,6 @@
 # Ignore Python compiled files
 __pycache__/
 *.py[cod]
-src/__pycache__/
 
 # Ignore virtual environment directory
 env/
