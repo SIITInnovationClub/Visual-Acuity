@@ -6,11 +6,12 @@ from src.constants import *
 
 
 class Audio_processing:
-    def __init__(self, arrayNum, speechRec):
+    def __init__(self, arrayNum, speechRec, type):
         self.arrayNum = arrayNum
         self.speechRec = speechRec
+        self.type = type
 
-    def record_audio(self):
+    def record_audio(self, TEXT_processor):
         # Parameters for audio recording
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
@@ -19,7 +20,7 @@ class Audio_processing:
             15000  # The chunk size defines the length of time for each analysis frame.
         )
 
-        THRESHOLD = 1000  # Adjust this threshold to fit your environment and microphone sensitivity.
+        THRESHOLD = 500  # Adjust this threshold to fit your environment and microphone sensitivity.
         SILENCE_LIMIT = (
             5  # Time in seconds to wait for silence before stopping recording.
         )
@@ -39,11 +40,12 @@ class Audio_processing:
         silence_frames = 0
         numberInput = 0
         speech_text = ""
+        hyp_text = ""
 
         while True:
             try:
                 if numberInput < self.arrayNum:
-                    data = stream.read(CHUNK, True)
+                    data = stream.read(CHUNK, False)
                     frames.append(data)
                     rms = audioop.rms(
                         data, 2
@@ -52,8 +54,26 @@ class Audio_processing:
                     if rms >= THRESHOLD:
                         audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
                         speech_text = self.speechRec.get_text(audio_data)
-                        print("Text: %s" % speech_text)
-                        numberInput = len(speech_text.split(" "))
+
+                        if self.type == "user":
+                            hyp_text = TEXT_processor.process_user_respond(speech_text)
+                            print("Translate to user response: %s" % hyp_text)
+
+                        elif self.type == "number":
+                            hyp_text = TEXT_processor.process_text(speech_text)
+                            print("Translate to number: %s" % hyp_text)
+
+                        array_hyp_text = hyp_text.split(" ")
+                        numberInput = len(array_hyp_text)
+
+                        if hyp_text.split(" ")[numberInput - 1] == "":
+                            numberInput -= 1
+                            silence_frames = (
+                                0  # Reset silence counter if there's audio activity.
+                            )
+                            continue
+
+                        print("Input: ", array_hyp_text)
                         print("NO.input: %d" % numberInput)
                         silence_frames = (
                             0  # Reset silence counter if there's audio activity.
@@ -78,7 +98,7 @@ class Audio_processing:
         stream.close()
         p.terminate()
 
-        return speech_text
+        return hyp_text
 
     def audio_visualization(audio):
         time = np.arange(len(audio))

@@ -12,7 +12,6 @@ class Speech_recognition:
         self.model = Wav2Vec2ForCTC.from_pretrained(self.model_name)
 
     def transcribe_audio(self, audio_np_array, original_sampling_rate=44100):
-
         audio_input = torch.tensor(audio_np_array, dtype=torch.float32).unsqueeze(0)
 
         target_sampling_rate = self.processor.feature_extractor.sampling_rate
@@ -31,9 +30,7 @@ class Speech_recognition:
         return transcription
 
     def get_text(self, audio_vector) -> str:
-        # text_sample = asr(audio_vector)
-        # return str(text_sample)
-        transcribe = self.transcribe_audio(audio_vector)
-        transcribe_segmented = word_tokenize(transcribe, keep_whitespace=False)
+        transcription = self.transcribe_audio(audio_vector)
+        transcribe_segmented = word_tokenize(transcription, keep_whitespace=False)
         text_sample = " ".join(transcribe_segmented)
         return text_sample

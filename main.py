@@ -13,12 +13,12 @@ from src.utils import *
 import time
 
 if __name__ == "__main__":
-    # set up system
+    # Set up system
     print("* Set up *")
     # Create instance of each class.
     IMG_processor = Image_processing()
     SPEECH_processor = Speech_recognition()
-    AUDIO_processor = Audio_processing(0, SPEECH_processor)
+    AUDIO_processor = Audio_processing(0, SPEECH_processor, "")
     TEXT_processor = Text_processing()
     # testing image
     # preprocess
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # print(overlay_ocr_text(im_1_path, '1_carplate'))
     print("* Set up finished *")
 
-    # set up variables
+    # Set up variables
     glasses_user = False
     total_score = 0
     num_pic = 2
@@ -48,9 +48,9 @@ if __name__ == "__main__":
     glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
     time.sleep(1)
 
-    # loop by number of pictures
+    # Loop by number of pictures
     for i in range(num_pic):
-        # image processing
+        # Image processing
         print("\nWait for image processing....")
         playsound_util(playsound_file_path["process_pic"])
 
@@ -60,10 +60,10 @@ if __name__ == "__main__":
         # for test only
         # fix data to check voice recon
         result_append = [
-            ["6", "5"],
-            ["2", "3", "9"],
             ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
             ["9", "8", "7", "6", "5", "4", "3", "2", "1"],
+            ["6", "5"],
+            ["2", "3", "9"],
         ]
         print("Finished image processing")
 

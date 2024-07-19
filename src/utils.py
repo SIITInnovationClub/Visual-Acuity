@@ -106,33 +106,6 @@ def play_num_sound(num):
         playsound_util(playsound_file_path[f"{num}"])
     except:
         print("คุณไม่ได้พูดจ้า")
-    # key = ['หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า']
-    # if num == key[0]:
-    #     playsound_util(playsound_file_path['หนึ่ง'])
-    #
-    # elif num == key[1]:
-    #     playsound_util(playsound_file_path['สอง'])
-    #
-    # elif num == key[2]:
-    #     playsound_util(playsound_file_path['สาม'])
-    #
-    # elif num == key[3]:
-    #     playsound_util(playsound_file_path['สี่'])
-    #
-    # elif num == key[4]:
-    #     playsound_util(playsound_file_path['ห้า'])
-    #
-    # elif num == key[5]:
-    #     playsound_util(playsound_file_path['หก'])
-    #
-    # elif num == key[6]:
-    #     playsound_util(playsound_file_path['เจ็ด'])
-    #
-    # elif num == key[7]:
-    #     playsound_util(playsound_file_path['แปด'])
-    #
-    # elif num == key[8]:
-    #     playsound_util(playsound_file_path['เก้า'])
 
 
 def extract_line_no(line):
@@ -195,10 +168,9 @@ def repeat_test_user_vision(AUDIO_processor, SPEECH_processor, TEXT_processor, i
     while hyp_text == "":
         playsound_util(playsound_file_path["repeat_same_line"])
         AUDIO_processor.arrayNum = len(i)
-        speech_text = AUDIO_processor.record_audio()
+        AUDIO_processor.type = "number"
         # ref_text = TEXT_processor.process_digit_thai(i)
-        hyp_text = TEXT_processor.process_text(speech_text)
-        print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
+        hyp_text = AUDIO_processor.record_audio(TEXT_processor)
 
         # Not number
         if hyp_text == "":
@@ -210,9 +182,8 @@ def repeat_test_user_vision(AUDIO_processor, SPEECH_processor, TEXT_processor, i
         while True:
             repeat_answer(hyp_text.split(" "))
             AUDIO_processor.arrayNum = 1
-            res_text = AUDIO_processor.record_audio()
-            user_respond = TEXT_processor.process_user_respond(res_text)
-            print(user_respond)
+            AUDIO_processor.type = "user"
+            user_respond = AUDIO_processor.record_audio(TEXT_processor)
             print(user_respond in YES, user_respond in NO)
             if user_respond in YES:
                 print("YES : Next step")
@@ -234,10 +205,9 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, arrayNum)
     while hyp_text == "":
         playsound_util(playsound_file_path["say_other_number"])
         AUDIO_processor.arrayNum = arrayNum
-        speech_text = AUDIO_processor.record_audio()
+        AUDIO_processor.type = "number"
         # ref_text = TEXT_processor.process_digit_thai(i)
-        hyp_text = TEXT_processor.process_text(speech_text)
-        print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
+        hyp_text = AUDIO_processor.record_audio(TEXT_processor)
 
         # Not number
         if hyp_text == "":
@@ -249,9 +219,8 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, arrayNum)
         while True:
             repeat_answer(hyp_text.split(" "))
             AUDIO_processor.arrayNum = 1
-            res_text = AUDIO_processor.record_audio()
-            user_respond = TEXT_processor.process_user_respond(res_text)
-            print(user_respond)
+            AUDIO_processor.type = "user"
+            user_respond = AUDIO_processor.record_audio(TEXT_processor)
             print(user_respond in YES, user_respond in NO)
             if user_respond in YES:
                 print("YES : Next step")
@@ -263,8 +232,6 @@ def other_number(AUDIO_processor, SPEECH_processor, TEXT_processor, i, arrayNum)
                     SPEECH_processor,
                     TEXT_processor,
                     i,
-                    YES,
-                    NO,
                     len(i) - len(hyp_text),
                 )
                 break
@@ -333,9 +300,8 @@ def check_glasses(AUDIO_processor, TEXT_processor):
     while True:
         playsound_util(playsound_file_path["check_glasses"])
         AUDIO_processor.arrayNum = 1
-        res_text = AUDIO_processor.record_audio()
-        user_respond = TEXT_processor.process_user_respond(res_text)
-        print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
+        AUDIO_processor.type = "user"
+        user_respond = AUDIO_processor.record_audio(TEXT_processor)
         print("* User Response *")
         print("YES : %s" % (user_respond in YES))
         print("NO  : %s" % (user_respond in NO))
@@ -358,9 +324,8 @@ def test_user(
     hyp_text = ""
     while True:
         AUDIO_processor.arrayNum = len(i)
-        speech_text = AUDIO_processor.record_audio()
-        hyp_text = TEXT_processor.process_text(speech_text)
-        print("TRANSLATE_TO_NUMBER : %s" % (hyp_text))
+        AUDIO_processor.type = "number"
+        hyp_text = AUDIO_processor.record_audio(TEXT_processor)
 
         # Not number
         if hyp_text == "":
@@ -372,9 +337,8 @@ def test_user(
             while True:
                 repeat_answer(hyp_text.split(" "))
                 AUDIO_processor.arrayNum = 1
-                res_text = AUDIO_processor.record_audio()
-                user_respond = TEXT_processor.process_user_respond(res_text)
-                print(user_respond)
+                AUDIO_processor.type = "user"
+                user_respond = AUDIO_processor.record_audio(TEXT_processor)
                 print(user_respond in YES, user_respond in NO)
                 if user_respond in YES:
                     print("YES : Next step")
@@ -399,10 +363,8 @@ def test_user(
                 while True:
                     playsound_util(playsound_file_path["check_other_number"])
                     AUDIO_processor.arrayNum = 1
-                    res_text = AUDIO_processor.record_audio()
-                    print("PURE_TEXT : %s" % (res_text))
-                    user_respond = TEXT_processor.process_user_respond(res_text)
-                    print("TRANSLATE_TO_RESPONSE : %s" % (user_respond))
+                    AUDIO_processor.type = "user"
+                    user_respond = AUDIO_processor.record_audio(TEXT_processor)
                     print("* User Response *")
                     if user_respond in YES:
                         print("YES")
@@ -446,6 +408,7 @@ YES = [
     "ใช่ใช่",
     "ช่าย",
     "ชั่ย",
+    "ช่าย",
 ]
 
 NO = [
@@ -463,3 +426,16 @@ NO = [
     "ไหม้",
     "ไม่ไม่",
 ]
+
+
+def check_array_value(array):
+    same = False
+    for i in array:
+        count = 0
+        for j in array:
+            if i == j:
+                count += 1
+            if count > 1:
+                same = True
+                return same
+    return same
