@@ -1,5 +1,6 @@
-import easyocr # type: ignore
-import cv2 # type: ignore
+import easyocr  # type: ignore
+import cv2  # type: ignore
+
 
 class Image_processing:
 

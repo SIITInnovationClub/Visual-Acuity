@@ -1,7 +1,7 @@
-import pyaudio # type: ignore
+import pyaudio  # type: ignore
 import audioop
-import matplotlib.pyplot as plt # type: ignore
-import numpy as np # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import numpy as np  # type: ignore
 from src.constants import *
 
 

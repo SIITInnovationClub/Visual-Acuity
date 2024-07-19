@@ -1,4 +1,4 @@
-from playsound import playsound # type: ignore
+from playsound import playsound  # type: ignore
 
 playsound_file_path = {
     "หนึ่ง": ("soundtrack/หนึ่ง.wav"),

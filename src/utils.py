@@ -1,4 +1,4 @@
-import numpy as np # type: ignore
+import numpy as np  # type: ignore
 import re
 from src.constants import *
 from datetime import datetime
