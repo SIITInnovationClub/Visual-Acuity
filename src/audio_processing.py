@@ -54,8 +54,10 @@ class Audio_processing:
                     if rms >= THRESHOLD:
                         audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
                         speech_text = self.speechRec.get_text(audio_data)
+                        print("Pure text: ", speech_text.split(" "))
 
                         if self.type == "user":
+
                             hyp_text = TEXT_processor.process_user_respond(speech_text)
                             print("Translate to user response: %s" % hyp_text)
 
