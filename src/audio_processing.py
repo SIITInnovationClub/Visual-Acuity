@@ -69,9 +69,6 @@ class Audio_processing:
 
                         if hyp_text.split(" ")[numberInput - 1] == "":
                             numberInput -= 1
-                            silence_frames = (
-                                0  # Reset silence counter if there's audio activity.
-                            )
                             continue
 
                         print("Input: ", array_hyp_text)
