@@ -496,6 +496,7 @@ def calculate_score(
     # Print the reference text for debugging
     # print("Reference Text:", ref_text)
     result_score = ""
+    past = False
     # Calculate the index for scoring
     # num_lines = len(ref_text)  # Number of lines in ref_text
 
@@ -516,16 +517,18 @@ def calculate_score(
                 scoring_index = 1
     else:
         if current_pic > 1:
-            scoring_index = past_last_line
+            result = past_last_line
+            past = True
         else:
             scoring_index = 1
 
     # Handle case where the scoring index is out of range
     if correct_score - line_number == 0:
         result_score = ""
-    result = scoring[scoring_index - 1]
+    if not (past):
+        result = scoring[int(scoring_index) - 1]
+        print("Scoring Index:", scoring_index - 1)
     # Print results
-    print("Scoring Index:", scoring_index - 1)
     print("Scoring Index Value:", result)
     if line_number != 1:
         full_result = f"20/{result} " + result_score
