@@ -7,24 +7,8 @@ class Image_processing:
     def __init__(self):
         self.repeat_count = 0
 
-    def preprocess_image(self, img_path):
-        """Preprocess the image for better OCR performance."""
-        frame = cv2.imread(img_path)
-        if frame is None:
-            raise ValueError("Image not found or cannot be loaded.")
-        
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-        _, thresh = cv2.threshold(blurred, 127, 255, cv2.THRESH_BINARY)
-        
-        return thresh
-
-    def enhance_image(self, img):
-        """Enhance the image to highlight text."""
-        edges = cv2.Canny(img, 100, 200)
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-        dilated = cv2.dilate(edges, kernel, iterations=1)
-        return dilated
+    def pre_process(self):
+        pass
 
     def split_digits(self, ocr_result):
         """Split OCR results into single digits."""
@@ -69,51 +53,49 @@ class Image_processing:
         """Extract scoring index from a line of numbers."""
         zero_index = line.find("0")
         if zero_index != -1:
-            score = line[zero_index + 1:]
+            score = line[zero_index + 1 :]
             if score:
                 return f"20/{line[:zero_index]}"
         return None
 
-    def return_ocr_result(self):
+    def return_ocr_result(self, img):
         self.repeat_count = 0
 
-        # Read and preprocess the image
-        img_path = "/Users/ammaster10/Documents/Github/Visual-Acuity/IMG_1269.jpg"
-        preprocessed_image = self.preprocess_image(img_path)
-        cv2.imshow("Preprocessed Image", preprocessed_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        
-        enhanced_image = self.enhance_image(preprocessed_image)
-        cv2.imshow("Enhanced Image", enhanced_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # Read the image
+        img_path = img
+        frame = cv2.imread(img_path)
+
+        if frame is None:
+            print("Error: Image not found or cannot be loaded.")
+            return None, None
 
         # Instance text detection
         reader = easyocr.Reader(["en"], gpu=False)
 
-        # Read text from image
-        text_raw = reader.readtext(enhanced_image, min_size=10, detail=1, paragraph=False)
-        print("Raw OCR Results:", text_raw)
+        threshold = 0.1
+        previous_texts = []
+        actual_output = []
 
+        # try:
+        text_raw = reader.readtext(frame)
         current_results = [
-            (bbox, text, score) for bbox, text, score in text_raw if score > 0.5
+            (bbox, text, score) for bbox, text, score in text_raw if score > threshold
         ]
 
-        previous_texts = []
         output = self.process_ocr_results(current_results, previous_texts)
+        actual_output.append(output)
         if output is None:
             print("Repeated results. Breaking loop.")
             return None, None
 
         # Draw bounding boxes and texts
-        frame = cv2.imread(img_path)
         for bbox, text, score in current_results:
-            if score > 0.5:
-                print(f"Drawing text: {text} with score: {score}")
+            if score > threshold:
                 top_left = tuple(map(int, bbox[0]))
                 bottom_right = tuple(map(int, bbox[2]))
-                if len(top_left) == 2 and len(bottom_right) == 2:
+                if (
+                    len(top_left) == 2 and len(bottom_right) == 2
+                ):  # Ensure valid coordinates
                     cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 5)
                     cv2.putText(
                         frame,
@@ -130,40 +112,44 @@ class Image_processing:
 
         # Display the image with drawn rectangles and text
         cv2.imshow("Text Recognition", frame)
-        cv2.waitKey(0)
+        # cv2.waitKey(0)  # Wait indefinitely until a key is pressed
         cv2.destroyAllWindows()
+
+        # except Exception as e:
+        #     print("ERROR OCCUR", e)
+        #     return None, None
 
         final_output = []
         scoring_index = []
 
         # Process final output to extract scoring index
         print("Output: ", output)
-        # Case of 40 46783 40
 
-        # Return result of final_output 46783 and scoring 40
+        # Output:  ['6096824', '0084846', '443242', '3042633']
+        # Result should be
 
+        # Scoring Index: ['20/60', '20/84', '20/44', '20/30']
+        # Final Output: ['96824', '84846', '43242', '42633']
+        final_output = []
+        scoring_index = []
+
+        # Process the output
         for line in output:
             temp_output = []
             temp_score = []
-            j = 0
-            for i in line:
 
-                if j == 0 and i.isdigit() and int(i) > 0:
-                    temp_score.append(i)
-                elif j < 3 and i == "0":
-                    temp_score.append(i)
-                elif i.isdigit() and int(i) > 0:
-                    temp_output.append(i)
-                elif j >= 3 and i == "0":
-                    temp_output.pop()
+            line_length = len(line)
+
+            for j in range(1, line_length):
+                temp_score = line[:j]
+                if line.endswith(temp_score):
+                    temp_output = line[j : line_length - j]
                     break
-                j += 1
 
-            final_output.append(("".join(temp_output)))
-            scoring_index.append(("".join(temp_score)))
-
+            final_output.append("".join(temp_output))
+            scoring_index.append("".join(temp_score))
         # Convert to dictionary
-        result_dict = {int(out): int(score) for out, score in zip(final_output, scoring_index) if out.isdigit() and score.isdigit()}
+        result_dict = {out: score for out, score in zip(final_output, scoring_index)}
 
         print("Final Output:", final_output)
         print("Scoring Index:", scoring_index)
