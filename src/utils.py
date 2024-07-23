@@ -427,6 +427,7 @@ def transform_result_append(arr):
 
 
 def areEqual(arr1, arr2):
+    print("Check answers")
     print("PURE: ", arr1, " ", arr2)
 
     N = len(arr1)
@@ -441,7 +442,7 @@ def areEqual(arr1, arr2):
     arr1.sort()
     arr2.sort()
 
-    print("TRANSFORM: ", arr1, " ", arr2)
+    print("TRANSFORM: ", arr1, " ", arr2, "\n")
 
     for i in range(0, N):
         if arr1[i] != arr2[i]:
@@ -455,10 +456,12 @@ def count_same_elements(arr1, arr2):
     N = len(arr1)
     M = len(arr2)
 
-    if N != M:
-        return 0
-
     arr2 = transform_words_to_numbers(arr2)
+
+    if N != M:
+        diff = N - M
+        for i in range(diff):
+            arr2.append(10)
 
     arr1.sort()
     arr2.sort()
@@ -487,26 +490,51 @@ def count_same_elements(arr1, arr2):
 # Your score will be 20/40
 
 
-def calculate_score(correct_score, score_lines):
+def calculate_score(
+    correct_score, scoring, current_line, line_number, current_pic, past_last_line
+):
     # Print the reference text for debugging
     # print("Reference Text:", ref_text)
-
+    result_score = ""
     # Calculate the index for scoring
-    num_lines = len(ref_text)  # Number of lines in ref_text
-    if num_lines > 0:
-        scoring_index = correct_score // 5 - 1
+    # num_lines = len(ref_text)  # Number of lines in ref_text
+
+    if line_number == 1:
+        scoring[0] = str(int(int(scoring[0]) / 2))
+    if correct_score > 0:
+        if current_line == 1:
+            scoring_index = current_line
+            result_score = f"{correct_score - line_number}"
+        elif correct_score > line_number / 2:
+            scoring_index = current_line
+            result_score = f"{correct_score - line_number}"
+        elif correct_score <= line_number / 2:
+            if current_line != 0:
+                scoring_index = current_line - 1
+                result_score = f"+{correct_score}"
+            else:
+                scoring_index = 1
     else:
-        scoring_index = 0
+        if current_pic > 1:
+            scoring_index = past_last_line
+        else:
+            scoring_index = 1
 
     # Handle case where the scoring index is out of range
-    result = score_lines[scoring_index]
-
+    if correct_score - line_number == 0:
+        result_score = ""
+    result = scoring[scoring_index - 1]
     # Print results
-    print("Scoring Index:", scoring_index)
+    print("Scoring Index:", scoring_index - 1)
     print("Scoring Index Value:", result)
-    print(f"Your score will be 20/{result}")
+    if line_number != 1:
+        full_result = f"20/{result} " + result_score
+    else:
+        full_result = f"10/{result} " + result_score
 
-    return result
+    print(f"Your score will be {full_result}")
+
+    return full_result
 
 
 # Test the function

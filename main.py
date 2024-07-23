@@ -15,6 +15,7 @@ from src.text_processing import Text_processing
 from src.speech_recognition import Speech_recognition
 from src.utils import *
 import time
+from PIL import Image  # type: ignore
 
 # Start running
 if __name__ == "__main__":
@@ -40,48 +41,50 @@ if __name__ == "__main__":
     # Set up necessary variables
     glasses_user = False
     total_score = 0
-    num_pic = 2
+    num_pic = len(image_file_path)
     total_pic = 0
     conclude_score = []
     result_global = ""
     change_page = True
-    user_continue = False
-    correct_number = 0
+    user_continue = True
     all_number = 0
+    past_last_line = 0
 
     # Start testing
-    print("\nStart...")
-    # Welcome
-    playsound_util(playsound_file_path["welcome"])
-    time.sleep(1)
+    # print("\nStart...")
+    # # Welcome
+    # playsound_util(playsound_file_path["welcome"])
+    # time.sleep(1)
 
-    # Check glasses for user
-    print("* Check glasses for user *")
-    glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
+    # # Check glasses for user
+    # print("* Check glasses for user *")
+    # glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
 
     # START "Testing for all pictures"
-    for pic in range(num_pic):
+    for pic in image_file_path:
+        img = Image.open(pic)
+        img.show()
         # START "Image Processing"
         print("\nWait for image processing....")
         playsound_util(playsound_file_path["process_pic"])
 
         # Use "Real Image Processing"
-        result_append, scoring = IMG_processor.return_ocr_result()
+        result_append, scoring = IMG_processor.return_ocr_result(pic)
 
         # Use "Mock Image Processing" (edit here for testing only voice)
+        # result_append = [
+        #     ["8", "5"],
+        #     ["2", "9", "3"],
+        #     ["8", "7", "5", "4"],
+        #     ["6", "3", "9", "5", "2"],
+        #     ["4", "2", "8", "3", "5", "6"],
+        #     ["3", "7", "4", "6", "2", "8", "5"],
+        #     ["4", "2", "7", "5", "9", "3", "6"],
+        #     ["7", "2", "6", "4", "7", "9", "3"],
+        #     ["3", "8", "7", "5", "2", "6", "4"],
+        #     ["6", "9", "3", "7", "4", "2", "5"],
+        # ]
 
-        result_append = [
-            ["8", "5"],
-            ["2", "9", "3"],
-            ["8", "7", "5", "4"],
-            ["6", "3", "9", "5", "2"],
-            ["4", "2", "8", "3", "5", "6"],
-            ["3", "7", "4", "6", "2", "8", "5"],
-            ["4", "2", "7", "5", "9", "3", "6"],
-            ["7", "2", "6", "4", "7", "9", "3"],
-            ["3", "8", "7", "5", "2", "6", "4"],
-            ["6", "9", "3", "7", "4", "2", "5"],
-        ]
         result_append = transform_result_append(result_append)
 
         print("Finished image processing")
@@ -102,7 +105,7 @@ if __name__ == "__main__":
         # START "Testing for all lines in that picture"
         for i in result_append:
             print(i)
-            correct_test = 0
+            correct_number = 0
             count_line += 1
             ref_text = TEXT_processor.process_digit_thai(i)
             hyp_text = test_user(
@@ -117,7 +120,7 @@ if __name__ == "__main__":
             print(f"ref_text: {ref_text}")
 
             print("* Current *")
-            print("Image No.%d\n" % (total_pic))
+            print("Image No.%d" % (total_pic))
             print("Line : %d/%d\n" % (count_line, len(result_append)))
 
             check_number = count_same_elements(i, hyp_text.split(" "))
@@ -127,6 +130,15 @@ if __name__ == "__main__":
             print("All Score : %d/%d" % (correct_number, all_number))
             print("=========================================")
 
+            print(correct_number)
+            print(scoring)
+            print(count_line)
+            print(len(i))
+            print(total_pic)
+            print(past_last_line)
+            Result_Eyesight = calculate_score(
+                correct_number, scoring, count_line, len(i), total_pic, past_last_line
+            )
             if check_number != len(i):
                 user_continue = False
                 diff = len(i) - check_number
@@ -136,7 +148,6 @@ if __name__ == "__main__":
                     print("USER: Done, %d incorrect answers." % diff)
                 break
 
-            # Result_Eyesight = calculate_score(correct_number, scoring)
             print("=========================================")
             print("Correct_number: ", correct_number)
             print("All_number: ", all_number)
@@ -151,42 +162,44 @@ if __name__ == "__main__":
             check_next_line(count_line, len(result_append))
 
         # END "Testing for all lines in that picture"
+        img.close()
         if not (user_continue):
             break
         # Change picture
         if total_pic != num_pic:
+            past_last_line = scoring[-1]
             playsound_util(playsound_file_path["change_pic"])
 
     playsound_util(playsound_file_path["end_of_process"])
     # END "Testing for all pictures"
 
     # def calculate_score(self, ref_text, correct_score, score_lines):
+    print("* Result *")
+    eye_val = f"{Result_Eyesight}"
+    print("Eyesight : " + eye_val)
 
-    # eye_val = f"20/{Result_Eyesight}"
-    # print(eye_val)
-
-    # # Example parameters for the visual acuity test result
-    # if glasses_user:
-    #     if eye_val != "":
-    #         write_va_result_to_file(
-    #             re_sc="-",
-    #             re_scph="-",
-    #             re_cc=eye_val,
-    #             re_ccph="-",
-    #             le_sc="-",
-    #             le_scph="-",
-    #             le_cc=eye_val,
-    #             le_ccph="-",
-    #         )
-    # else:
-    #     if eye_val != "":
-    #         write_va_result_to_file(
-    #             re_sc="eye_val",
-    #             re_scph="-",
-    #             re_cc="-",
-    #             re_ccph="-",
-    #             le_sc="eye_val",
-    #             le_scph="-",
-    #             le_cc="-",
-    #             le_ccph="-",
-    #         )
+    # Example parameters for the visual acuity test result
+    if glasses_user:
+        if eye_val != "":
+            write_va_result_to_file(
+                re_sc="-",
+                re_scph="-",
+                re_cc=eye_val,
+                re_ccph="-",
+                le_sc="-",
+                le_scph="-",
+                le_cc=eye_val,
+                le_ccph="-",
+            )
+    else:
+        if eye_val != "":
+            write_va_result_to_file(
+                re_sc="eye_val",
+                re_scph="-",
+                re_cc="-",
+                re_ccph="-",
+                le_sc="eye_val",
+                le_scph="-",
+                le_cc="-",
+                le_ccph="-",
+            )
