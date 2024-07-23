@@ -90,7 +90,8 @@ if __name__ == "__main__":
         print("All of numbers in this image are :")
         for i in result_append:
             print(i)
-        print("")
+            all_number += len(i)
+        print("All Number are : %d" % all_number)
         print("\n* First line *")
         playsound_util(playsound_file_path["first_line"])
         count_line = 0
@@ -102,7 +103,6 @@ if __name__ == "__main__":
             correct_test = 0
             count_line += 1
             ref_text = TEXT_processor.process_digit_thai(i)
-            all_number += len(i)
             hyp_text = test_user(
                 AUDIO_processor,
                 TEXT_processor,
