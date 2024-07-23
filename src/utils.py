@@ -487,7 +487,7 @@ def count_same_elements(arr1, arr2):
 # Your score will be 20/40
 
 
-def calculate_score(self, correct_score, score_lines):
+def calculate_score(correct_score, score_lines):
     # Print the reference text for debugging
     # print("Reference Text:", ref_text)
 
