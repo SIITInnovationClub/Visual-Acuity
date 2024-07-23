@@ -114,6 +114,8 @@ if __name__ == "__main__":
             print(f"hyp_text: {hyp_text}")
             print(f"ref_text: {ref_text}")
 
+            print("\nCurrent Line : %d/%d\n" % (count_line, len(result_append)))
+
             check_number = count_same_elements(i, hyp_text.split(" "))
             print("* SCORE *")
             print("Line Score : %d/%d" % (check_number, len(i)))
