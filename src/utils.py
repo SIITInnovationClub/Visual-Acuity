@@ -387,3 +387,53 @@ def test_user(
                 check_next_line(count_line, len(result_append))
                 break
     return hyp_text
+
+# Output:  ['6096824', '0084846', '443242', '3042633']
+# Result should be
+
+# Scoring Index / Scoring: ['20/60', '20/50', '20/40', '20/30']
+# Final Output / Hyp_words : ['96824', '84846', '43242', '42633']
+
+# If you say
+# "9 6 8 2 4" , "8 4 8 4 6", "4 3 2 5 2" then you score will be 20/50 ..... 
+
+
+def calculate_score(self, ref_text, hyp_text, score_lines):
+        ref_lines = ref_text.split()
+        hyp_words = hyp_text.split()
+
+        scoring_index = []
+        final_output = []
+        total_correct = 0
+
+        # Iterate over each line in the reference text
+        for ref_word in ref_lines:
+            # Extract digits only
+            digits_only = "".join(filter(str.isdigit, ref_word))
+            final_output.append(digits_only)
+
+            # Calculate the corresponding visual acuity line
+            length = len(digits_only)
+            score = f"20/{length * 10}"
+            scoring_index.append(score)
+
+            # Calculate correct matches
+            hyp_digits = "".join(filter(str.isdigit, hyp_words))
+            correct_count = sum(1 for c in digits_only if c in hyp_digits)
+            total_correct += correct_count
+
+        # Determine final score using the provided score lines
+        for score in score_lines:
+            if total_correct >= len(hyp_words) * (1 - score / 100):  # adjust the threshold as needed
+                final_score = f"20/{score}"
+                break
+        else:
+            final_score = f"20/{score_lines[-1]}"  # default to the worst score if no match
+
+        # Print results
+        print("Scoring Index:", scoring_index)
+        print("Final Output:", final_output)
+        print(f"Your score will be {final_score}")
+
+        return total_correct
+
