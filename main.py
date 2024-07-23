@@ -60,7 +60,7 @@ if __name__ == "__main__":
     glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
 
     # START "Testing for all pictures"
-    for i in range(num_pic):
+    for pic in range(num_pic):
         # START "Image Processing"
         print("\nWait for image processing....")
         playsound_util(playsound_file_path["process_pic"])
@@ -71,17 +71,19 @@ if __name__ == "__main__":
         # Use "Mock Image Processing" (edit here for testing only voice)
 
         result_append = [
-            [8, 5],
-            [2, 9, 3],
-            [8, 7, 5, 4],
-            [6, 3, 9, 5, 2],
-            [4, 2, 8, 3, 5, 6],
-            [3, 7, 4, 6, 2, 8, 5],
-            [4, 2, 7, 5, 9, 3, 6],
-            [7, 2, 6, 4, 7, 9, 3],
-            [3, 8, 7, 5, 2, 6, 4],
-            [6, 9, 3, 7, 4, 2, 5],
+            ["8", "5"],
+            ["2", "9", "3"],
+            ["8", "7", "5", "4"],
+            ["6", "3", "9", "5", "2"],
+            ["4", "2", "8", "3", "5", "6"],
+            ["3", "7", "4", "6", "2", "8", "5"],
+            ["4", "2", "7", "5", "9", "3", "6"],
+            ["7", "2", "6", "4", "7", "9", "3"],
+            ["3", "8", "7", "5", "2", "6", "4"],
+            ["6", "9", "3", "7", "4", "2", "5"],
         ]
+        result_append = transform_result_append(result_append)
+
         print("Finished image processing")
         # END "Image Processing"
 
@@ -114,7 +116,9 @@ if __name__ == "__main__":
             print(f"hyp_text: {hyp_text}")
             print(f"ref_text: {ref_text}")
 
-            print("\nCurrent Line : %d/%d\n" % (count_line, len(result_append)))
+            print("* Current *")
+            print("Image No.%d\n" % (total_pic))
+            print("Line : %d/%d\n" % (count_line, len(result_append)))
 
             check_number = count_same_elements(i, hyp_text.split(" "))
             print("* SCORE *")

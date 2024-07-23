@@ -388,6 +388,21 @@ def test_user(
     return hyp_text
 
 
+def transform_nums_to_numbers(arr):
+    word_to_number = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 7,
+        "8": 8,
+        "9": 9,
+    }
+    return [word_to_number[word] for word in arr]
+
+
 def transform_words_to_numbers(arr):
     word_to_number = {
         "หนึ่ง": 1,
@@ -401,6 +416,14 @@ def transform_words_to_numbers(arr):
         "เก้า": 9,
     }
     return [word_to_number[word] for word in arr]
+
+
+def transform_result_append(arr):
+    big_result = []
+    for i in arr:
+        transform_result = transform_nums_to_numbers(i)
+        big_result.append(transform_result)
+    return big_result
 
 
 def areEqual(arr1, arr2):
@@ -428,17 +451,20 @@ def areEqual(arr1, arr2):
 
 
 def count_same_elements(arr1, arr2):
+    print("PURE: ", arr1, " ", arr2)
     N = len(arr1)
     M = len(arr2)
 
     if N != M:
         return 0
 
+    arr1 = transform_nums_to_numbers(arr1)
     arr2 = transform_words_to_numbers(arr2)
 
     arr1.sort()
     arr2.sort()
 
+    print("TRANSFORM: ", arr1, " ", arr2)
     same_count = 0
 
     i, j = 0, 0
@@ -455,7 +481,6 @@ def count_same_elements(arr1, arr2):
     return same_count
 
 
-
 # Reference Text: ['96824', '84846', '43242', '42633']
 # correct_score = 14
 # Scoring Index: 2
@@ -464,25 +489,27 @@ def count_same_elements(arr1, arr2):
 
 
 def calculate_score(self, ref_text, correct_score, score_lines):
-        # Print the reference text for debugging
-        print("Reference Text:", ref_text)
+    # Print the reference text for debugging
+    print("Reference Text:", ref_text)
 
-        # Calculate the index for scoring
-        num_lines = len(ref_text)  # Number of lines in ref_text
-        if num_lines > 0:
-            scoring_index = correct_score//5-1
-        else:
-            scoring_index = 0
-        
-        # Handle case where the scoring index is out of range
-        result = score_lines[scoring_index]
-        
-        # Print results
-        print("Scoring Index:", scoring_index)
-        print("Scoring Index Value:", result)
-        print(f"Your score will be 20/{result}")
+    # Calculate the index for scoring
+    num_lines = len(ref_text)  # Number of lines in ref_text
+    if num_lines > 0:
+        scoring_index = correct_score // 5 - 1
+    else:
+        scoring_index = 0
 
-        return result
+    # Handle case where the scoring index is out of range
+    result = score_lines[scoring_index]
+
+    # Print results
+    print("Scoring Index:", scoring_index)
+    print("Scoring Index Value:", result)
+    print(f"Your score will be 20/{result}")
+
+    return result
+
+
 # Test the function
 # ref_text = ['96824', '84846', '43242', '42633']
 # correct_score = 15
