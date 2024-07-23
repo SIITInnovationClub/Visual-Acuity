@@ -87,9 +87,9 @@ if __name__ == "__main__":
 
         print("\n* Test user's vision *")
         print(f"There are #{len(result_append)} lines ")
-        print("All of numbers in this image are ")
+        print("All of numbers in this image are :")
         for i in result_append:
-            print(result_append)
+            print(i)
         print("")
         print("\n* First line *")
         playsound_util(playsound_file_path["first_line"])
