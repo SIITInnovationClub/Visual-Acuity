@@ -489,23 +489,23 @@ def count_same_elements(arr1, arr2):
 
 
 def calculate_score(self, correct_score, score_lines):
-        # Print the reference text for debugging
-        # print("Reference Text:", ref_text)
+    # Print the reference text for debugging
+    # print("Reference Text:", ref_text)
 
-        # Calculate the index for scoring
-        num_lines = len(ref_text)  # Number of lines in ref_text
-        if num_lines > 0:
-            scoring_index = correct_score//5-1
-        else:
-            scoring_index = 0
-        
-        # Handle case where the scoring index is out of range
-        result = score_lines[scoring_index]
-        
-        # Print results
-        print("Scoring Index:", scoring_index)
-        print("Scoring Index Value:", result)
-        print(f"Your score will be 20/{result}")
+    # Calculate the index for scoring
+    num_lines = len(ref_text)  # Number of lines in ref_text
+    if num_lines > 0:
+        scoring_index = correct_score // 5 - 1
+    else:
+        scoring_index = 0
+
+    # Handle case where the scoring index is out of range
+    result = score_lines[scoring_index]
+
+    # Print results
+    print("Scoring Index:", scoring_index)
+    print("Scoring Index Value:", result)
+    print(f"Your score will be 20/{result}")
 
     return result
 
