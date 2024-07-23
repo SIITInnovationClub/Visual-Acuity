@@ -54,6 +54,8 @@ class Text_processing:
         result = []
         for i, word in enumerate(text_sample.split(" ")):
             if word in key:
+                if len(result) >= 1:
+                    break
                 if word in synonym["yes"]:
                     word = "YES"
                 elif word in synonym["no"]:

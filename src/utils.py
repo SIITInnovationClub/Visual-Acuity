@@ -317,7 +317,10 @@ def check_glasses(AUDIO_processor, TEXT_processor):
 
 
 def test_user(
-    AUDIO_processor, TEXT_processor, SPEECH_processor, i, count_line, result_append
+    AUDIO_processor,
+    TEXT_processor,
+    SPEECH_processor,
+    i,
 ):
     hyp_text = ""
     while True:
@@ -381,9 +384,72 @@ def test_user(
                         print("Don't understand, please say it again.")
                         playsound_util(playsound_file_path["cannot_catch"])
 
-                check_next_line(count_line, len(result_append))
-                break
-            else:
-                check_next_line(count_line, len(result_append))
-                break
+            break
     return hyp_text
+
+
+def transform_words_to_numbers(arr):
+    word_to_number = {
+        "หนึ่ง": 1,
+        "สอง": 2,
+        "สาม": 3,
+        "สี่": 4,
+        "ห้า": 5,
+        "หก": 6,
+        "เจ็ด": 7,
+        "แปด": 8,
+        "เก้า": 9,
+    }
+    return [word_to_number[word] for word in arr]
+
+
+def areEqual(arr1, arr2):
+    print("PURE: ", arr1, " ", arr2)
+
+    N = len(arr1)
+    M = len(arr2)
+
+    if N != M:
+        return False
+
+    arr2 = transform_words_to_numbers(arr2)
+
+    # Sort both arrays
+    arr1.sort()
+    arr2.sort()
+
+    print("TRANSFORM: ", arr1, " ", arr2)
+
+    for i in range(0, N):
+        if arr1[i] != arr2[i]:
+            return False
+
+        return True
+
+
+def count_same_elements(arr1, arr2):
+    N = len(arr1)
+    M = len(arr2)
+
+    if N != M:
+        return 0
+
+    arr2 = transform_words_to_numbers(arr2)
+
+    arr1.sort()
+    arr2.sort()
+
+    same_count = 0
+
+    i, j = 0, 0
+    while i < N and j < M:
+        if arr1[i] < arr2[j]:
+            i += 1
+        elif arr1[i] > arr2[j]:
+            j += 1
+        else:
+            same_count += 1
+            i += 1
+            j += 1
+
+    return same_count
