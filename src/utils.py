@@ -458,7 +458,6 @@ def count_same_elements(arr1, arr2):
     if N != M:
         return 0
 
-    arr1 = transform_nums_to_numbers(arr1)
     arr2 = transform_words_to_numbers(arr2)
 
     arr1.sort()
@@ -488,13 +487,13 @@ def count_same_elements(arr1, arr2):
 # Your score will be 20/40
 
 
-def calculate_score(self, correct_score, score_lines):
+def calculate_score(correct_score, score_lines):
         # Print the reference text for debugging
         # print("Reference Text:", ref_text)
 
         # Calculate the index for scoring
-        num_lines = len(ref_text)  # Number of lines in ref_text
-        if num_lines > 0:
+        # num_lines = len(ref_text)  # Number of lines in ref_text
+        if correct_score > 0:
             scoring_index = correct_score//5-1
         else:
             scoring_index = 0
@@ -507,7 +506,7 @@ def calculate_score(self, correct_score, score_lines):
         print("Scoring Index Value:", result)
         print(f"Your score will be 20/{result}")
 
-    return result
+        return result
 
 
 # Test the function
