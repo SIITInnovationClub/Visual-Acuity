@@ -458,7 +458,6 @@ def count_same_elements(arr1, arr2):
     if N != M:
         return 0
 
-    arr1 = transform_nums_to_numbers(arr1)
     arr2 = transform_words_to_numbers(arr2)
 
     arr1.sort()
