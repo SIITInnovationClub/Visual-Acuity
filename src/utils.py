@@ -453,3 +453,38 @@ def count_same_elements(arr1, arr2):
             j += 1
 
     return same_count
+
+
+
+# Reference Text: ['96824', '84846', '43242', '42633']
+# correct_score = 14
+# Scoring Index: 2
+# Scoring Index Value: 40
+# Your score will be 20/40
+
+
+def calculate_score(self, ref_text, correct_score, score_lines):
+        # Print the reference text for debugging
+        print("Reference Text:", ref_text)
+
+        # Calculate the index for scoring
+        num_lines = len(ref_text)  # Number of lines in ref_text
+        if num_lines > 0:
+            scoring_index = correct_score//5-1
+        else:
+            scoring_index = 0
+        
+        # Handle case where the scoring index is out of range
+        result = score_lines[scoring_index]
+        
+        # Print results
+        print("Scoring Index:", scoring_index)
+        print("Scoring Index Value:", result)
+        print(f"Your score will be 20/{result}")
+
+        return result
+# Test the function
+# ref_text = ['96824', '84846', '43242', '42633']
+# correct_score = 15
+# score_lines = [80,60,40,20]
+# calculate_score(None, ref_text, correct_score, score_lines)
