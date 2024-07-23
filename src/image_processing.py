@@ -133,22 +133,27 @@ class Image_processing:
         final_output = []
         scoring_index = []
 
-        if output:
-            for line in output:
-                temp_output = []
-                temp_score = []
-                j = 0
-                for i in line:
-                    if j == 0 or i == "0":
-                        temp_score.append(i)
-                    else:
-                        temp_output.append(i)
-                    j += 1
+        # Process the output
+        for line in output:
+            temp_output = []
+            temp_score = []
+            j = 0
+            for i in line:
+                if j == 0 or i == "0":
+                    temp_score.append(i)
+                else:
+                    temp_output.append(i)
+                j += 1
 
-                final_output.append((temp_output))
-                scoring_index.append((temp_score))
+            final_output.append("".join(temp_output))
+            scoring_index.append("".join(temp_score))
+
+        # Convert to dictionary
+        result_dict = {out: score for out, score in zip(final_output, scoring_index)}
 
         print("Final Output:", final_output)
         print("Scoring Index:", scoring_index)
+        print("Result Dictionary:", result_dict)
 
+        
         return final_output, scoring_index

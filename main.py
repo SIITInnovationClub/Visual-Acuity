@@ -66,22 +66,22 @@ if __name__ == "__main__":
         playsound_util(playsound_file_path["process_pic"])
 
         # Use "Real Image Processing"
-        # result_append ,scoring = IMG_processor.return_ocr_result()
+        result_append, scoring = IMG_processor.return_ocr_result()
 
         # Use "Mock Image Processing" (edit here for testing only voice)
 
-        result_append = [
-            [8, 5],
-            [2, 9, 3],
-            [8, 7, 5, 4],
-            [6, 3, 9, 5, 2],
-            [4, 2, 8, 3, 5, 6],
-            [3, 7, 4, 6, 2, 8, 5],
-            [4, 2, 7, 5, 9, 3, 6],
-            [7, 2, 6, 4, 7, 9, 3],
-            [3, 8, 7, 5, 2, 6, 4],
-            [6, 9, 3, 7, 4, 2, 5],
-        ]
+        # result_append = [
+        #     [8, 5],
+        #     [2, 9, 3],
+        #     [8, 7, 5, 4],
+        #     [6, 3, 9, 5, 2],
+        #     [4, 2, 8, 3, 5, 6],
+        #     [3, 7, 4, 6, 2, 8, 5],
+        #     [4, 2, 7, 5, 9, 3, 6],
+        #     [7, 2, 6, 4, 7, 9, 3],
+        #     [3, 8, 7, 5, 2, 6, 4],
+        #     [6, 9, 3, 7, 4, 2, 5],
+        # ]
         print("Finished image processing")
         # END "Image Processing"
 
@@ -132,54 +132,63 @@ if __name__ == "__main__":
                     print("USER: Done, %d incorrect answers." % diff)
                 break
 
-            evaluation_result = evaluation_score(
-                ref_len=len(ref_text),
-                hyp_len=len(hyp_text),
-                hyp_text=hyp_text,
-                ref_text=ref_text,
-            )
+            Result_Eyesight = calculate_score( correct_number, scoring)
+            print("=========================================")
+            print("Correct_number: ", correct_number)
+            print("All_number: ", all_number)
 
-            check_next_line(count_line, len(result_append))
 
-            total_score += len(evaluation_result)
-            resultg = result(len(i), correct_test)
-            conclude_score.append((f"picture_number_{num_pic}", resultg))
-            result_global = resultg
+        #     evaluation_result = evaluation_score(
+        #         ref_len=len(ref_text),
+        #         hyp_len=len(hyp_text),
+        #         hyp_text=hyp_text,
+        #         ref_text=ref_text,
+        #     )
 
-        # END "Testing for all lines in that picture"
-        if not (user_continue):
-            break
-        # Change picture
-        if total_pic != num_pic:
-            playsound_util(playsound_file_path["change_pic"])
+        #     check_next_line(count_line, len(result_append))
+
+        #     total_score += len(evaluation_result)
+        #     resultg = result(len(i), correct_test)
+        #     conclude_score.append((f"picture_number_{num_pic}", resultg))
+        #     result_global = resultg
+
+        # # END "Testing for all lines in that picture"
+        # if not (user_continue):
+        #     break
+        # # Change picture
+        # if total_pic != num_pic:
+        #     playsound_util(playsound_file_path["change_pic"])
 
     playsound_util(playsound_file_path["end_of_process"])
-    print(f"Score: {total_score}")
-    print(result_global)
+    # print(f"Score: {total_score}")
+    # print(result_global)
     # END "Testing for all pictures"
 
+    # def calculate_score(self, ref_text, correct_score, score_lines):
+   
     # Result of testing
-    if result_global != "":
-        line_no_and_with = extract_line_no(result_global)
-        for i in str(line_no_and_with[0]):
-            if i == "0":
-                eye_sight = 200
-            elif i == "1":
-                eye_sight = 100
-            elif i == "2":
-                eye_sight = 70
-            elif i == "3":
-                eye_sight = 50
-            elif i == "4":
-                eye_sight = 40
-            elif i == "5":
-                eye_sight = 30
-            elif i == "6":
-                eye_sight = 25
-            elif i == "7":
-                eye_sight = 20
-        eye_val = f"20/{eye_sight}"
-        print(eye_val)
+    # if result_global != "":
+    #     line_no_and_with = extract_line_no(result_global)
+    #     for i in str(line_no_and_with[0]):
+    #         if i == "0":
+    #             eye_sight = 200
+    #         elif i == "1":
+    #             eye_sight = 100
+    #         elif i == "2":
+    #             eye_sight = 70
+    #         elif i == "3":
+    #             eye_sight = 50
+    #         elif i == "4":
+    #             eye_sight = 40
+    #         elif i == "5":
+    #             eye_sight = 30
+    #         elif i == "6":
+    #             eye_sight = 25
+    #         elif i == "7":
+    #             eye_sight = 20
+    
+    eye_val = f"20/{Result_Eyesight}"
+    print(eye_val)
 
     # Example parameters for the visual acuity test result
     if glasses_user:
