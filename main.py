@@ -63,7 +63,7 @@ if __name__ == "__main__":
     for pic in range(num_pic):
         # START "Image Processing"
         print("\nWait for image processing....")
-        playsound_util(playsound_file_path["process_pic"])
+        # playsound_util(playsound_file_path["process_pic"])
 
         # Use "Real Image Processing"
         result_append, scoring = IMG_processor.return_ocr_result()

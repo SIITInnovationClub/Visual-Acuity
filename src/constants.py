@@ -38,6 +38,14 @@ playsound_file_path = {
     "say_other_number": "soundtrack/พูดเลขที่คุณเห็นเพิ่มหลังเสียงสัญญาณ.wav",
 }
 
+image_file_path = [
+    # "src/test_pictures/1st_pic.jpg",
+    # "src/test_pictures/2nd_pic.jpg",
+    # "src/test_pictures/3rd_pic.jpg",
+    "src/test_pictures/4th_pic.jpg",
+    "src/test_pictures/5th_pic.jpg"
+    # ,
+]
 
 # SYNONYM
 synonym = {
