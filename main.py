@@ -9,13 +9,14 @@
 # Coding Part
 # Import all necessary files
 from src.constants import *
+from src.utils import *
 from src.image_processing import Image_processing
 from src.audio_processing import Audio_processing
 from src.text_processing import Text_processing
 from src.speech_recognition import Speech_recognition
-from src.utils import *
-import time
 from PIL import Image  # type: ignore
+import time
+
 
 # Start running
 if __name__ == "__main__":
@@ -62,8 +63,6 @@ if __name__ == "__main__":
 
     # START "Testing for all pictures"
     for pic in image_file_path:
-        img = Image.open(pic)
-        img.show()
         # START "Image Processing"
         print("\nWait for image processing....")
         playsound_util(playsound_file_path["process_pic"])
@@ -89,6 +88,10 @@ if __name__ == "__main__":
 
         print("Finished image processing")
         # END "Image Processing"
+
+        # Open image
+        img = Image.open(pic)
+        img.show()
 
         print("\n* Test user's vision *")
         print(f"There are #{len(result_append)} lines ")
@@ -162,7 +165,10 @@ if __name__ == "__main__":
             check_next_line(count_line, len(result_append))
 
         # END "Testing for all lines in that picture"
+
+        # Close image
         img.close()
+
         if not (user_continue):
             break
         # Change picture
@@ -194,11 +200,11 @@ if __name__ == "__main__":
     else:
         if eye_val != "":
             write_va_result_to_file(
-                re_sc="eye_val",
+                re_sc=eye_val,
                 re_scph="-",
                 re_cc="-",
                 re_ccph="-",
-                le_sc="eye_val",
+                le_sc=eye_val,
                 le_scph="-",
                 le_cc="-",
                 le_ccph="-",
