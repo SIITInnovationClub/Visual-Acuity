@@ -39,11 +39,11 @@ playsound_file_path = {
 }
 
 image_file_path = [
-    # "src/test_pictures/1st_pic.jpg",
-    "src/test_pictures/2nd_pic.jpg",
-    "src/test_pictures/3rd_pic.jpg",
-    "src/test_pictures/4th_pic.jpg",
-    "src/test_pictures/5th_pic.jpg",
+    # "test_pictures/1st_pic.jpg",
+    "test_pictures/2nd_pic.jpg",
+    "test_pictures/3rd_pic.jpg",
+    "test_pictures/4th_pic.jpg",
+    "test_pictures/5th_pic.jpg",
 ]
 
 # SYNONYM
@@ -51,7 +51,7 @@ synonym = {
     # NUMBER
     "one": ["นึก", "นึ่ง", "นึง", "หนุ่ง", "อึ่ง"],
     "two": ["ส่อง", "ซอง", "โฉง", "สอ"],
-    "three": ["ซ้ำ", "สาง", "สา", "ศาร"],
+    "three": ["ซ้ำ", "สาง", "สา", "ศาร", "ศาม", "สาร"],
     "four": [
         "สี",
         "ซี",
@@ -119,6 +119,8 @@ synonym = {
         "ชัต",
         "ชัย",
         "ไช่ย",
+        "ไชย",
+        "ใชย",
     ],
     "no": [
         "ผิด",
