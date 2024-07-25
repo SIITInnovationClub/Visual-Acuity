@@ -317,7 +317,10 @@ def check_glasses(AUDIO_processor, TEXT_processor):
 
 
 def test_user(
-    AUDIO_processor, TEXT_processor, SPEECH_processor, i, count_line, result_append
+    AUDIO_processor,
+    TEXT_processor,
+    SPEECH_processor,
+    i,
 ):
     hyp_text = ""
     while True:
@@ -381,9 +384,164 @@ def test_user(
                         print("Don't understand, please say it again.")
                         playsound_util(playsound_file_path["cannot_catch"])
 
-                check_next_line(count_line, len(result_append))
-                break
-            else:
-                check_next_line(count_line, len(result_append))
-                break
+            break
     return hyp_text
+
+
+def transform_nums_to_numbers(arr):
+    word_to_number = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7": 7,
+        "8": 8,
+        "9": 9,
+    }
+    return [word_to_number[word] for word in arr]
+
+
+def transform_words_to_numbers(arr):
+    word_to_number = {
+        "หนึ่ง": 1,
+        "สอง": 2,
+        "สาม": 3,
+        "สี่": 4,
+        "ห้า": 5,
+        "หก": 6,
+        "เจ็ด": 7,
+        "แปด": 8,
+        "เก้า": 9,
+    }
+    return [word_to_number[word] for word in arr]
+
+
+def transform_result_append(arr):
+    big_result = []
+    for i in arr:
+        transform_result = transform_nums_to_numbers(i)
+        big_result.append(transform_result)
+    return big_result
+
+
+def areEqual(arr1, arr2):
+    print("Check answers")
+    print("PURE: ", arr1, " ", arr2)
+
+    N = len(arr1)
+    M = len(arr2)
+
+    if N != M:
+        return False
+
+    arr2 = transform_words_to_numbers(arr2)
+
+    # Sort both arrays
+    arr1.sort()
+    arr2.sort()
+
+    print("TRANSFORM: ", arr1, " ", arr2, "\n")
+
+    for i in range(0, N):
+        if arr1[i] != arr2[i]:
+            return False
+
+        return True
+
+
+def count_same_elements(arr1, arr2):
+    print("PURE: ", arr1, " ", arr2)
+    N = len(arr1)
+    M = len(arr2)
+
+    arr2 = transform_words_to_numbers(arr2)
+
+    if N != M:
+        diff = N - M
+        for i in range(diff):
+            arr2.append(10)
+
+    arr1.sort()
+    arr2.sort()
+
+    print("TRANSFORM: ", arr1, " ", arr2)
+    same_count = 0
+
+    i, j = 0, 0
+    while i < N and j < M:
+        if arr1[i] < arr2[j]:
+            i += 1
+        elif arr1[i] > arr2[j]:
+            j += 1
+        else:
+            same_count += 1
+            i += 1
+            j += 1
+
+    return same_count
+
+
+# Reference Text: ['96824', '84846', '43242', '42633']
+# correct_score = 14
+# Scoring Index: 2
+# Scoring Index Value: 40
+# Your score will be 20/40
+
+
+def calculate_score(
+    correct_score, scoring, current_line, line_number, current_pic, past_last_line
+):
+    # Print the reference text for debugging
+    # print("Reference Text:", ref_text)
+    result_score = ""
+    past = False
+    # Calculate the index for scoring
+    # num_lines = len(ref_text)  # Number of lines in ref_text
+
+    if line_number == 1:
+        scoring[0] = str(int(int(scoring[0]) / 2))
+    if correct_score > 0:
+        if current_line == 1:
+            scoring_index = current_line
+            result_score = f"{correct_score - line_number}"
+        elif correct_score > line_number / 2:
+            scoring_index = current_line
+            result_score = f"{correct_score - line_number}"
+        elif correct_score <= line_number / 2:
+            if current_line != 0:
+                scoring_index = current_line - 1
+                result_score = f"+{correct_score}"
+            else:
+                scoring_index = 1
+    else:
+        if current_pic > 1:
+            result = past_last_line
+            past = True
+        else:
+            scoring_index = 1
+
+    # Handle case where the scoring index is out of range
+    if correct_score - line_number == 0:
+        result_score = ""
+    if not (past):
+        result = scoring[int(scoring_index) - 1]
+        print("Scoring Index:", scoring_index - 1)
+    # Print results
+    print("Scoring Index Value:", result)
+    if line_number != 1:
+        full_result = f"20/{result} " + result_score
+    else:
+        full_result = f"10/{result} " + result_score
+
+    print(f"Your score will be {full_result}")
+
+    return full_result
+
+
+# Test the function
+# ref_text = ['96824', '84846', '43242', '42633']
+# correct_score = 15
+# score_lines = [80,60,40,20]
+# calculate_score(None, ref_text, correct_score, score_lines)

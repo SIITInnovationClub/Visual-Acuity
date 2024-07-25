@@ -58,11 +58,11 @@ class Image_processing:
                 return f"20/{line[:zero_index]}"
         return None
 
-    def return_ocr_result(self):
+    def return_ocr_result(self, img):
         self.repeat_count = 0
 
         # Read the image
-        img_path = "/Users/ammaster10/Documents/Github/Visual-Acuity/IMG_1269.jpg"
+        img_path = img
         frame = cv2.imread(img_path)
 
         if frame is None:
@@ -133,22 +133,26 @@ class Image_processing:
         final_output = []
         scoring_index = []
 
-        if output:
-            for line in output:
-                temp_output = []
-                temp_score = []
-                j = 0
-                for i in line:
-                    if j == 0 or i == "0":
-                        temp_score.append(i)
-                    else:
-                        temp_output.append(i)
-                    j += 1
+        # Process the output
+        for line in output:
+            temp_output = []
+            temp_score = []
 
-                final_output.append((temp_output))
-                scoring_index.append((temp_score))
+            line_length = len(line)
+
+            for j in range(1, line_length):
+                temp_score = line[:j]
+                if line.endswith(temp_score):
+                    temp_output = line[j : line_length - j]
+                    break
+
+            final_output.append("".join(temp_output))
+            scoring_index.append("".join(temp_score))
+        # Convert to dictionary
+        result_dict = {out: score for out, score in zip(final_output, scoring_index)}
 
         print("Final Output:", final_output)
         print("Scoring Index:", scoring_index)
+        print("Result Dictionary:", result_dict)
 
         return final_output, scoring_index
