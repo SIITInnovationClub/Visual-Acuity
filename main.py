@@ -52,20 +52,20 @@ if __name__ == "__main__":
     past_last_line = 0
 
     # Start testing
-    # print("\nStart...")
-    # # Welcome
-    # playsound_util(playsound_file_path["welcome"])
-    # time.sleep(1)
+    print("\nStart...")
+    # Welcome
+    playsound_util(playsound_file_path["welcome"])
+    time.sleep(1)
 
-    # # Check glasses for user
-    # print("* Check glasses for user *")
-    # glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
+    # Check glasses for user
+    print("* Check glasses for user *")
+    glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
 
     # START "Testing for all pictures"
     for pic in image_file_path:
         # START "Image Processing"
         print("\nWait for image processing....")
-        # playsound_util(playsound_file_path["process_pic"])
+        playsound_util(playsound_file_path["process_pic"])
 
         # Use "Real Image Processing"
         result_append, scoring = IMG_processor.return_ocr_result(pic)
