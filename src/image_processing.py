@@ -7,8 +7,16 @@ class Image_processing:
     def __init__(self):
         self.repeat_count = 0
 
-    def pre_process(self):
-        pass
+    def pre_process(self, image):
+        """Pre-process the image for better OCR results."""
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # Increase contrast
+        gray = cv2.convertScaleAbs(gray, alpha=1.5, beta=0)
+        # Apply adaptive thresholding
+        processed = cv2.adaptiveThreshold(
+            gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+        )
+        return processed
 
     def split_digits(self, ocr_result):
         """Split OCR results into single digits."""
@@ -69,15 +77,21 @@ class Image_processing:
             print("Error: Image not found or cannot be loaded.")
             return None, None
 
+        # Zoom the image for better OCR results
+        scale_factor = 2
+        frame = cv2.resize(frame, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
+
+        processed_frame = self.pre_process(frame)
+
         # Instance text detection
         reader = easyocr.Reader(["en"], gpu=False)
 
-        threshold = 0.1
+        threshold = 0.2
         previous_texts = []
         actual_output = []
 
         # try:
-        text_raw = reader.readtext(frame)
+        text_raw = reader.readtext(processed_frame)
         current_results = [
             (bbox, text, score) for bbox, text, score in text_raw if score > threshold
         ]
@@ -143,7 +157,7 @@ class Image_processing:
             for j in range(1, line_length):
                 temp_score = line[:j]
                 if line.endswith(temp_score):
-                    temp_output = line[j : line_length - j]
+                    temp_output = line[j : line_length - j]   
                     break
 
             final_output.append("".join(temp_output))
