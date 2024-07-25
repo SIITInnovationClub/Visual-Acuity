@@ -52,6 +52,7 @@ class Audio_processing:
                     )  # Calculate the RMS energy of the audio chunk.
 
                     if rms >= THRESHOLD:
+                        print("Detect Sound...")
                         audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
                         speech_text = self.speechRec.get_text(audio_data)
                         print("Pure text: ", speech_text.split(" "))
@@ -67,19 +68,25 @@ class Audio_processing:
                         array_hyp_text = hyp_text.split(" ")
                         numberInput = len(array_hyp_text)
 
+                        # Keep increase silence until approve sound
+                        silence_frames += 1
+
                         if hyp_text.split(" ")[numberInput - 1] == "":
                             numberInput -= 1
                             continue
 
-                        print("Input: ", array_hyp_text)
-                        print("NO.input: %d" % numberInput)
+                        print("* Approve Sound *")
                         silence_frames = (
                             0  # Reset silence counter if there's audio activity.
                         )
+                        print("Input: ", array_hyp_text)
+                        print("NO.input: %d" % numberInput)
+
                         if numberInput >= self.arrayNum:
                             print("Done. Stopping recording.")
                             break
                     else:
+                        print("Detect Silence...")
                         silence_frames += 1
 
                     if silence_frames > int(RATE / CHUNK) * SILENCE_LIMIT:
