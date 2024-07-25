@@ -39,7 +39,7 @@ playsound_file_path = {
 }
 
 image_file_path = [
-    # "test_pictures/1st_pic.jpg",
+    "test_pictures/1st_pic.jpg",
     "test_pictures/2nd_pic.jpg",
     "test_pictures/3rd_pic.jpg",
     "test_pictures/4th_pic.jpg",
