@@ -3,6 +3,8 @@ import audioop
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np  # type: ignore
 from src.constants import *
+from src.utils import *
+import noisereduce as nr  # type: ignore
 
 
 class Audio_processing:
@@ -16,14 +18,10 @@ class Audio_processing:
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
         RATE = 35000
-        CHUNK = (
-            15000  # The chunk size defines the length of time for each analysis frame.
-        )
+        CHUNK = 15000  # Length of each chunk
+        THRESHOLD = 100  # RMS threshold for detecting sound
+        SILENCE_LIMIT = 5  # Time in seconds to wait for silence before stopping
 
-        THRESHOLD = 100  # Adjust this threshold to fit your environment and microphone sensitivity.
-        SILENCE_LIMIT = (
-            5  # Time in seconds to wait for silence before stopping recording.
-        )
         p = pyaudio.PyAudio()
         # Open the microphone stream
         stream = p.open(
@@ -49,18 +47,23 @@ class Audio_processing:
                     frames.append(data)
                     rms = audioop.rms(
                         data, 2
-                    )  # Calculate the RMS energy of the audio chunk.
+                    )  # Calculate the RMS energy of the audio chunk
 
                     if rms >= THRESHOLD:
                         print("Detect Sound...")
+                        # Convert raw data to numpy array
                         audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
+
+                        # Noise reduction
+                        audio_data = nr.reduce_noise(y=audio_data, sr=RATE)
+
+                        # Process audio data with speech recognition
                         speech_text = self.speechRec.get_text(audio_data)
                         print("Pure text: ", speech_text.split(" "))
 
                         if self.type == "user":
                             hyp_text = TEXT_processor.process_user_respond(speech_text)
                             print("Translate to user response: %s" % hyp_text)
-
                         elif self.type == "number":
                             hyp_text = TEXT_processor.process_text(speech_text)
                             print("Translate to number: %s" % hyp_text)
@@ -68,7 +71,7 @@ class Audio_processing:
                         array_hyp_text = hyp_text.split(" ")
                         numberInput = len(array_hyp_text)
 
-                        # Keep increase silence until approve sound
+                        # Keep increasing silence until approve sound
                         silence_frames += 1
 
                         if hyp_text.split(" ")[numberInput - 1] == "":
@@ -77,14 +80,14 @@ class Audio_processing:
 
                         print("* Approve Sound *")
                         silence_frames = (
-                            0  # Reset silence counter if there's audio activity.
+                            0  # Reset silence counter if there's audio activity
                         )
                         print("Input: ", array_hyp_text)
                         print("NO.input: %d" % numberInput)
 
                         if numberInput >= self.arrayNum:
                             if numberInput > self.arrayNum:
-                                array_hyp_text[-1] = ""
+                                array_hyp_text.pop()
                                 hyp_text = " ".join(array_hyp_text)
                             print("Done. Stopping recording.")
                             break
@@ -98,7 +101,7 @@ class Audio_processing:
 
                 else:
                     if numberInput > self.arrayNum:
-                        array_hyp_text[-1] = ""
+                        array_hyp_text.pop()
                         hyp_text = " ".join(array_hyp_text)
                     print("Done. Stopping recording.")
                     break

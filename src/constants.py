@@ -1,12 +1,3 @@
-from pydub import AudioSegment, effects  # type: ignore
-from pydub.playback import play  # type: ignore
-
-
-def playsound_util(path):
-    sound = AudioSegment.from_file(file=path, format="wav")
-    play(sound)
-
-
 # FILE PATH
 playsound_file_path = {
     "หนึ่ง": ("soundtrack/หนึ่ง.wav"),
@@ -160,5 +151,6 @@ synonym = {
         "ไม่ไม่",
         "แมก",
         "ไหม",
+        "แม่",
     ],
 }
