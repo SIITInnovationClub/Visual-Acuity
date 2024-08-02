@@ -51,15 +51,15 @@ if __name__ == "__main__":
     all_number = 0
     past_last_line = 0
 
-    # Start testing
-    print("\nStart...")
-    # Welcome
-    playsound_util(playsound_file_path["welcome"])
-    time.sleep(1)
+    # # Start testing
+    # print("\nStart...")
+    # # Welcome
+    # playsound_util(playsound_file_path["welcome"])
+    # time.sleep(1)
 
-    # Check glasses for user
-    print("* Check glasses for user *")
-    glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
+    # # Check glasses for user
+    # print("* Check glasses for user *")
+    # glasses_user = check_glasses(AUDIO_processor, TEXT_processor)
 
     # START "Testing for all pictures"
     for pic in image_file_path:
@@ -127,18 +127,9 @@ if __name__ == "__main__":
             print("Line : %d/%d\n" % (count_line, len(result_append)))
 
             check_number = count_same_elements(i, hyp_text.split(" "))
-            print("* SCORE *")
-            print("Line Score : %d/%d" % (check_number, len(i)))
             correct_number += check_number
-            print("All Score : %d/%d" % (correct_number, all_number))
-            print("=========================================")
 
-            print(correct_number)
-            print(scoring)
-            print(count_line)
-            print(len(i))
-            print(total_pic)
-            print(past_last_line)
+            print("=========================================")
             Result_Eyesight = calculate_score(
                 correct_number, scoring, count_line, len(i), total_pic, past_last_line
             )

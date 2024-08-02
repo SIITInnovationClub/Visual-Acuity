@@ -20,7 +20,7 @@ class Audio_processing:
             15000  # The chunk size defines the length of time for each analysis frame.
         )
 
-        THRESHOLD = 250  # Adjust this threshold to fit your environment and microphone sensitivity.
+        THRESHOLD = 100  # Adjust this threshold to fit your environment and microphone sensitivity.
         SILENCE_LIMIT = (
             5  # Time in seconds to wait for silence before stopping recording.
         )
@@ -83,6 +83,9 @@ class Audio_processing:
                         print("NO.input: %d" % numberInput)
 
                         if numberInput >= self.arrayNum:
+                            if numberInput > self.arrayNum:
+                                array_hyp_text[-1] = ""
+                                hyp_text = " ".join(array_hyp_text)
                             print("Done. Stopping recording.")
                             break
                     else:
@@ -94,6 +97,9 @@ class Audio_processing:
                         break
 
                 else:
+                    if numberInput > self.arrayNum:
+                        array_hyp_text[-1] = ""
+                        hyp_text = " ".join(array_hyp_text)
                     print("Done. Stopping recording.")
                     break
 

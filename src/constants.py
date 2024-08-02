@@ -1,8 +1,10 @@
-from playsound import playsound  # type: ignore
+from pydub import AudioSegment, effects  # type: ignore
+from pydub.playback import play  # type: ignore
 
 
 def playsound_util(path):
-    playsound(path)
+    sound = AudioSegment.from_file(file=path, format="wav")
+    play(sound)
 
 
 # FILE PATH
@@ -50,8 +52,8 @@ image_file_path = [
 synonym = {
     # NUMBER
     "one": ["นึก", "นึ่ง", "นึง", "หนุ่ง", "อึ่ง"],
-    "two": ["ส่อง", "ซอง", "โฉง", "สอ"],
-    "three": ["ซ้ำ", "สาง", "สา", "ศาร", "ศาม", "สาร", "ศาล"],
+    "two": ["ส่อง", "ซอง", "โฉง", "สอ", "สง"],
+    "three": ["ซ้ำ", "สาง", "สา", "ศาร", "ศาม", "สาร", "ศาล", "ศาน"],
     "four": [
         "สี",
         "ซี",
@@ -87,10 +89,26 @@ synonym = {
         "ห้อ",
         "ถ้า",
         "ห้าง",
+        "หะ",
     ],
-    "six": ["ฮก", "ฮ้ก", "ห้ก", "อก", "โหก", "หอก", "อก", "หบ", "โอก", "ปก", "นก", "หุก"],
+    "six": [
+        "ฮก",
+        "ฮ้ก",
+        "ห้ก",
+        "อก",
+        "โหก",
+        "หอก",
+        "อก",
+        "หบ",
+        "โอก",
+        "ปก",
+        "นก",
+        "หุก",
+        "หมก",
+        "จก",
+    ],
     "seven": ["เจต", "เจ๋ด", "เจ้ด", "เก็ด"],
-    "eight": ["แปต", "แบ", "แป", "แตก", "แตด"],
+    "eight": ["แปต", "แบ", "แป", "แตก", "แตด", "แฟก", "แป้", "แตส", "แปร", "แอบ"],
     "nine": ["เก่า", "ก้าว", "เก้", "เกา"],
     # RESPONSE
     "yes": [

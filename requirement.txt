@@ -1,11 +1,10 @@
 matplotlib
 wheel
 easyocr
-playsound
+pydub
 pip
 setuptools
 pyaudio
 transformers
 torchaudio
 pythainlp
-PyObjC
