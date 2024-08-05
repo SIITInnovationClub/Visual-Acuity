@@ -32,13 +32,23 @@ class Audio_processing:
             frames_per_buffer=CHUNK,
         )
 
-        print("Recording...")
-        playsound_util(playsound_file_path["beep"])
         frames = []
         silence_frames = 0
         numberInput = 0
         speech_text = ""
         hyp_text = ""
+
+        if self.type == "open":
+            data = stream.read(CHUNK, False)
+            frames.append(data)
+            audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
+            audio_data = nr.reduce_noise(y=audio_data, sr=RATE)
+            speech_text = self.speechRec.get_text(audio_data)
+            print("Audio set up competed.")
+            return
+
+        print("Recording...")
+        playsound_util(playsound_file_path["beep"])
 
         while True:
             try:

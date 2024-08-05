@@ -27,6 +27,8 @@ if __name__ == "__main__":
     SPEECH_processor = Speech_recognition()
     AUDIO_processor = Audio_processing(0, SPEECH_processor, "")
     TEXT_processor = Text_processing()
+    AUDIO_processor.type = "open"
+    AUDIO_processor.record_audio(TEXT_processor)
 
     # SUB_TASK "Test with image processing."
     # SUB_TASK "Preprocess"
