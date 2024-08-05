@@ -127,21 +127,14 @@ if __name__ == "__main__":
             print("Line : %d/%d\n" % (count_line, len(result_append)))
 
             check_number = count_same_elements(i, hyp_text.split(" "))
-            print("* SCORE *")
-            print("Line Score : %d/%d" % (check_number, len(i)))
             correct_number += check_number
-            print("All Score : %d/%d" % (correct_number, all_number))
-            print("=========================================")
 
-            print(correct_number)
-            print(scoring)
-            print(count_line)
-            print(len(i))
-            print(total_pic)
-            print(past_last_line)
+            print("=========================================")
             Result_Eyesight = calculate_score(
                 correct_number, scoring, count_line, len(i), total_pic, past_last_line
             )
+            print("Score : %d/%d" % (check_number, len(i)))
+
             if check_number != len(i):
                 user_continue = False
                 diff = len(i) - check_number

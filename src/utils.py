@@ -2,6 +2,52 @@ import numpy as np  # type: ignore
 import re
 from src.constants import *
 from datetime import datetime
+from pydub import AudioSegment, effects  # type: ignore
+from pydub.playback import play  # type: ignore
+import pyaudio  # type: ignore
+import time
+
+
+def playsound_util(path):
+    sound = AudioSegment.from_file(path)
+    raw_data = sound.raw_data
+    sample_width = sound.sample_width
+    channels = sound.channels
+    rate = sound.frame_rate
+
+    # Define a callback function with chunk size
+    def callback(in_data, frame_count, time_info, status):
+        nonlocal raw_data
+        num_bytes = frame_count * sample_width * channels
+        if len(raw_data) > num_bytes:
+            data_to_return = raw_data[:num_bytes]
+            raw_data = raw_data[num_bytes:]
+            return (data_to_return, pyaudio.paContinue)
+        else:
+            return (raw_data, pyaudio.paComplete)
+
+    p = pyaudio.PyAudio()
+
+    # Experiment with different chunk sizes (e.g., 1024, 2048)
+    CHUNK_SIZE = 2048
+
+    stream = p.open(
+        format=p.get_format_from_width(sample_width),
+        channels=channels,
+        rate=rate,
+        output=True,
+        frames_per_buffer=CHUNK_SIZE,
+        stream_callback=callback,
+    )
+
+    stream.start_stream()
+
+    while stream.is_active():
+        time.sleep(0.1)
+
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
 
 def evaluation_score(ref_len, hyp_len, hyp_text, ref_text):
@@ -358,7 +404,7 @@ def test_user(
                     playsound_util(playsound_file_path["cannot_catch"])
 
             print(hyp_text)
-            print(f"{hyp_text.split(" ")}")
+            print(f'{hyp_text.split(" ")}')
 
             if diff_length_array(hyp_text.split(" "), i):
                 while True:
