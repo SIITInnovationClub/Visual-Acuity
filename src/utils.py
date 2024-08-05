@@ -404,7 +404,7 @@ def test_user(
                     playsound_util(playsound_file_path["cannot_catch"])
 
             print(hyp_text)
-            print(f"{hyp_text.split(" ")}")
+            print(f'{hyp_text.split(" ")}')
 
             if diff_length_array(hyp_text.split(" "), i):
                 while True:
