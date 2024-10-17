@@ -1,5 +1,4 @@
 pyaudio==0.2.13
-audioop  # (Built-in with Python, does not need to be installed)
 matplotlib==3.5.3
 numpy==1.22.4
 noisereduce==2.0.1
@@ -9,10 +8,7 @@ torch==1.13.1+cpu
 torchaudio==0.13.1
 transformers==4.25.1
 pythainlp==3.0.8
-re  # (Built-in with Python, does not need to be installed)
-datetime  # (Built-in with Python, does not need to be installed)
 pydub==0.25.1
-time  # (Built-in with Python, does not need to be installed)
 Pillow==9.4.0
 wheel==0.40.0
 pip>=22.0.0
