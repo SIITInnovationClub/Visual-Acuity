@@ -27,6 +27,8 @@ if __name__ == "__main__":
     SPEECH_processor = Speech_recognition()
     AUDIO_processor = Audio_processing(0, SPEECH_processor, "")
     TEXT_processor = Text_processing()
+    AUDIO_processor.type = "open"
+    AUDIO_processor.record_audio(TEXT_processor)
 
     # SUB_TASK "Test with image processing."
     # SUB_TASK "Preprocess"
@@ -65,7 +67,7 @@ if __name__ == "__main__":
     for pic in image_file_path:
         # START "Image Processing"
         print("\nWait for image processing....")
-        # playsound_util(playsound_file_path["process_pic"])
+        playsound_util(playsound_file_path["process_pic"])
 
         # Use "Real Image Processing"
         result_append, scoring = IMG_processor.return_ocr_result(pic)
