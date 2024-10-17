@@ -58,9 +58,10 @@ class Audio_processing:
                     rms = audioop.rms(
                         data, 2
                     )  # Calculate the RMS energy of the audio chunk
-                    # Process audio data with speech recognition
-                        speech_text = self.speechRec.get_text(audio_data)
-                        print("Pure text: ", speech_text.split(" "))
+                    audio_data = np.frombuffer(b"".join(frames), dtype=np.int16)
+                    speech_text_test = self.speechRec.get_text(audio_data)
+                    print("Pure text test: ", speech_text_test.split(" "))
+
                     if rms >= THRESHOLD:
                         print("Detect Sound...")
                         # Convert raw data to numpy array
