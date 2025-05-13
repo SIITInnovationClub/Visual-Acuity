@@ -1,78 +1,39 @@
-from src.constants import *
+import difflib
+from src.constants import *  # Keep your constants if you still use them elsewhere
 
 
 class Text_processing:
     def __init__(self):
-        pass
+        # Define canonical Thai forms
+        self.number_words = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
+        self.yes_no = {"YES": ["ใช่"], "NO": ["ไม่ใช่", "ไม่"]}  # canonical examples
+
+    def get_best_match(
+        self, word: str, choices: list[str], threshold: float = 0.6
+    ) -> str | None:
+        match = difflib.get_close_matches(word, choices, n=1, cutoff=threshold)
+        return match[0] if match else None
 
     def process_text(self, text_sample: str) -> str:
-        key = ["หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"]
-        key = (
-            key
-            + synonym["one"]
-            + synonym["two"]
-            + synonym["three"]
-            + synonym["four"]
-            + synonym["five"]
-            + synonym["six"]
-            + synonym["seven"]
-            + synonym["eight"]
-            + synonym["nine"]
-        )
         result = []
-        for i, word in enumerate(text_sample.split(" ")):
-            if word in key:
-                if word in synonym["one"]:
-                    word = "หนึ่ง"
-                elif word in synonym["two"]:
-                    word = "สอง"
-                elif word in synonym["three"]:
-                    word = "สาม"
-                elif word in synonym["four"]:
-                    word = "สี่"
-                elif word in synonym["five"]:
-                    word = "ห้า"
-                elif word in synonym["six"]:
-                    word = "หก"
-                elif word in synonym["seven"]:
-                    word = "เจ็ด"
-                elif word in synonym["eight"]:
-                    word = "แปด"
-                elif word in synonym["nine"]:
-                    word = "เก้า"
-                result.append(word)
-        hyp_text = ""
-        for i, word in enumerate(result):
-            if i < (len(result) - 1):
-                hyp_text += word + " "
-            else:
-                hyp_text += word
-        return hyp_text
+        for word in text_sample.split(" "):
+            match = self.get_best_match(word, self.number_words)
+            if match:
+                result.append(match)
+        return " ".join(result)
 
     def process_user_respond(self, text_sample: str) -> str:
-        key = synonym["yes"] + synonym["no"]
-        result = []
-        for i, word in enumerate(text_sample.split(" ")):
-            if word in key:
-                if len(result) >= 1:
-                    break
-                if word in synonym["yes"]:
-                    word = "YES"
-                elif word in synonym["no"]:
-                    word = "NO"
-                result.append(word)
-        res_text = ""
-        for i, word in enumerate(result):
-            if i < (len(result) - 1):
-                res_text += word + " "
-            else:
-                res_text += word
-        return res_text
+        for word in text_sample.split(" "):
+            yes_match = self.get_best_match(word, self.yes_no["YES"])
+            no_match = self.get_best_match(word, self.yes_no["NO"])
+            if yes_match:
+                return "YES"
+            elif no_match:
+                return "NO"
+        return ""  # fallback if no valid word
 
-    # process digit to thai words
     def process_digit_thai(self, digits) -> str:
         digits = str(digits).strip()
-        result_gathering = []
         digit_dict = {
             "1": "หนึ่ง",
             "2": "สอง",
@@ -84,6 +45,4 @@ class Text_processing:
             "8": "แปด",
             "9": "เก้า",
         }
-        for i_ in digits:
-            result_gathering.append(digit_dict.get(i_, "0"))
-        return " ".join(result_gathering)
+        return " ".join(digit_dict.get(d, "0") for d in digits)

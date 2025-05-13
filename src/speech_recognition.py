@@ -6,7 +6,7 @@ from pythainlp import sent_tokenize, word_tokenize  # type: ignore
 
 class Speech_recognition:
     def __init__(self):
-        self.model_name = "wannaphong/wav2vec2-large-xlsr-53-th-cv8-deepcut"
+        self.model_name = "airesearch/wav2vec2-large-xlsr-53-th"
         self.tokenizer = Wav2Vec2CTCTokenizer.from_pretrained(self.model_name)
         self.processor = Wav2Vec2Processor.from_pretrained(self.model_name)
         self.model = Wav2Vec2ForCTC.from_pretrained(self.model_name)

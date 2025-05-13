@@ -53,3 +53,5 @@ src/__pycache__/image_processing.cpython-312.pyc
 src/__pycache__/speech_recognition.cpython-312.pyc
 src/__pycache__/text_processing.cpython-312.pyc
 src/__pycache__/utils.cpython-312.pyc
+
+test_results/
